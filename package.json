@@ -8,16 +8,19 @@
   },
   "repository": "https://github.com/danieldekerlegand/agile-6363",
   "keywords": [
-		"question",
-		"bank",
-		"quiz",
-		"creation",
-		"pdf",
-		"teaching"
+    "question",
+    "bank",
+    "quiz",
+    "creation",
+    "pdf",
+    "teaching"
   ],
   "author": "UNO",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "~1.6.2"
+  },
+  "dependencies": {
+    "pdfkit": "^0.8.3"
   }
 }
