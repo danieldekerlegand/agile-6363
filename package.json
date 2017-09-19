@@ -1,20 +1,21 @@
 {
-  "name": "electron-quick-start",
+  "name": "question-bank",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "An application for creating question banks that can be used to generate quizzes.",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/danieldekerlegand/agile-6363",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+		"question",
+		"bank",
+		"quiz",
+		"creation",
+		"pdf",
+		"teaching"
   ],
-  "author": "GitHub",
+  "author": "UNO",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "~1.6.2"
