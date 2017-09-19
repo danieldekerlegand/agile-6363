@@ -1,21 +1,14 @@
 # agile-6363
-This is simple question bank web application which allows administrators and teachers to manage classes and quizzes and allows students to take quizzes and track their grades and class progress. The application is written in Java and JavaScript using the Spring framework for the backend and React for the frontend.
+This is simple question bank web application which allows administrators and teachers to create a question bank which can be used to generate quizzes. These quizzes can be exported to PDF. The application is written in JavaScript using the Electron framework.
 
 ## Installing Dependencies
 Before installing the application, first you must make sure to have the following dependencies installed on your computer:
-* Java 1.8 (JDK 8)
-* Maven
+* Node.js
 
-You can follow [this guide](http://www.baeldung.com/install-maven-on-windows-linux-mac) if you have any trouble during the installation steps.
+You can find the installer for Node.js [here](https://nodejs.org/en/).
 
 ## Installing and Running the Application
-To install this application, clone the application using ```git clone https://github.com/danieldekerlegand/agile-6363.git``` and navigate into the directory. If you have correctly installed Java and Maven, starting the application should be as simple as running the command ```mvn spring-boot:run```. In order to view the web application, navigate to ```localhost:8080``` which is the default port for Spring apps. In order to stop the server, execute ```CTRL + C``` in the terminal.
+To install this application, clone the application using ```git clone https://github.com/danieldekerlegand/agile-6363.git``` and navigate into the directory. If you have correctly installed Node.js, you can then install the dependencies for the project by running the command ```npm install```. This process may take a while. Once all dependencies are installed, the application can be run using the command ```npm start```.
 
-If you only want to compile the project, you can use ```mvn compile``` to generate classfiles or ```mvn package``` to generate a JAR file.
-## Writing and Running Unit Tests
-Tests are located in the /src/test directory and can be run using the ```mvn test``` command.
 ## Some Helpful Resources
-* [Building Java Projects with Maven](https://spring.io/guides/gs/maven/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Getting Started with Spring Boot, Travis, and Heroku](http://felippepuhle.com.br/getting-started-with-spring-boot-travis-and-heroku/) 
+* [Electron Docs](https://electron.atom.io/docs/)
