@@ -15,6 +15,7 @@ To install this application, clone the application using ```git clone https://gi
 * [Scrum Board with Waffle.io](https://waffle.io/danieldekerlegand/agile-6363)
 * [Continuous Integration with TravisCI](https://travis-ci.org/danieldekerlegand/agile-6363)
 * [Unit Testing with Mocha.js](https://mochajs.org/)
+* [Logging Mechanism with loglevel](https://github.com/pimterry/loglevel)
 * [Static Analysis with eslint](https://eslint.org/)
 * [Wiki with GitHub Wiki](https://github.com/danieldekerlegand/agile-6363/wiki)
 * [Acceptance Testing with Chimp.js](https://chimp.readme.io/)
