@@ -12,6 +12,7 @@ To install this application, clone the application using ```git clone https://gi
 
 ## Agile Tools
 * [Waffle Board](https://waffle.io/danieldekerlegand/agile-6363)
+* [Travis CI Server](https://travis-ci.org/danieldekerlegand/agile-6363)
 
 ## Some Helpful Resources
 * [Electron Docs](https://electron.atom.io/docs/)
