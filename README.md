@@ -11,8 +11,13 @@ You can find the installer for Node.js [here](https://nodejs.org/en/).
 To install this application, clone the application using ```git clone https://github.com/danieldekerlegand/agile-6363.git``` and navigate into the directory. If you have correctly installed Node.js, you can then install the dependencies for the project by running the command ```npm install```. This process may take a while. Once all dependencies are installed, the application can be run using the command ```npm start```.
 
 ## Agile Tools
-* [Waffle Board](https://waffle.io/danieldekerlegand/agile-6363)
-* [Travis CI Server](https://travis-ci.org/danieldekerlegand/agile-6363)
+* [Feature Driven Development with GitHub Issues](https://github.com/danieldekerlegand/agile-6363/issues)
+* [Scrum Board with Waffle.io](https://waffle.io/danieldekerlegand/agile-6363)
+* [Continuous Integration with TravisCI](https://travis-ci.org/danieldekerlegand/agile-6363)
+* [Unit Testing with Mocha.js](https://mochajs.org/)
+* [Static Analysis with eslint](https://eslint.org/)
+* [Wiki with GitHub Wiki](https://github.com/danieldekerlegand/agile-6363/wiki)
+* [Acceptance Testing with Chimp.js](https://chimp.readme.io/)
 
 ## Some Helpful Resources
 * [Electron Docs](https://electron.atom.io/docs/)
