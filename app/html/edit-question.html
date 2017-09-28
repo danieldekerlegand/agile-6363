@@ -1,0 +1,25 @@
+<h2>Edit Question</h2>
+<div class="container">
+<form id="edit-question-form" action="#" method="POST">
+  <div class="container-fluid">
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="question_id">Question ID</label>
+      <input class="col-sm-3 form-control" type="text" id="question_id"
+        aria-describedby="questionIdHelpInline" readonly>
+      <small id="questionIdHelpInline" class="col-sm-4 align-top form-text text-muted">
+        The number assigned to the question below.</small>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label" for="first_name">Question Text</label>
+      <input class="col-sm-3 form-control" type="text" id="question_text"
+        aria-describedby="questionTextHelpInline">
+      <small id="questionTextHelpInline" class="col-sm-4 align-top form-text text-muted">
+        Question text.</small>
+    </div>
+    <div class="form-group row offset-sm-1">
+      <button class="col-sm-auto m-1 btn btn-primary justify-content-start p-0.5"
+       id="edit-question-submit" type="submit">Update</button>
+    </div>
+  </div>
+</form>
+</div>
