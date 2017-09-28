@@ -21,6 +21,7 @@
     "electron": "~1.6.2"
   },
   "dependencies": {
-    "pdfkit": "^0.8.3"
+    "pdfkit": "^0.8.3",
+    "sqlite3": "^3.1.12"
   }
 }
