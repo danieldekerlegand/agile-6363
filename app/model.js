@@ -123,7 +123,9 @@ module.exports.getQuestions = function () {
       let row = db.exec(query)
       if (row !== undefined && row.length > 0) {
         row = _rowsFromSqlDataObject(row[0])
-        view.showQuestions(row)
+				return row
+				// console.log(row)
+        // view.showQuestions(row)
       }
     } catch (error) {
       console.log('model.getQuestions', error.message)

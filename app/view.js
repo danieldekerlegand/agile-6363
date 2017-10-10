@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path')
 const model = require(path.join(__dirname, 'model.js'))
+const pdf = require(path.join(__dirname, 'generate-pdf.js'))
 
 module.exports.showQuestions = function (rowsObject) {
   let markup = ''
@@ -11,13 +12,13 @@ module.exports.showQuestions = function (rowsObject) {
     path.join(__dirname, 'img', 'edit-icon.png') + '">' +
     '<img id="del-qid_' + row.question_id + '" class="icon delete" src="' +
     path.join(__dirname, 'img', 'x-icon.png') + '"></div>' +
-    '<div class="col-sm-6 questiontext">' + row.question_text + ',</div>' +
+    '<div class="col-sm-6 questiontext">' + row.question_text + '</div>' +
     '</div>'
   }
   $('#people, #edit-person, #edit-question').hide()
   $('#questions-list').html(markup)
   $('a.nav-link').removeClass('active')
-  $('a.nav-link.questions').addClass('active')
+  $('a.nav-link.list-questions').addClass('active')
   $('#questions').show()
   $('#questions-list img.edit').each(function (idx, obj) {
     $(obj).on('click', function () {
@@ -35,7 +36,7 @@ module.exports.listQuestions = function (e) {
   $('a.nav-link').removeClass('active')
   $(e).addClass('active')
   $('#people, #edit-person, #edit-question').hide()
-  window.model.getQuestions()
+  window.view.showQuestions(window.model.getQuestions())
   $('#questions').show()
 }
 
@@ -79,4 +80,8 @@ module.exports.getFormFieldValues = function (formId) {
     keyValue.values.push($(obj).val())
   })
   return keyValue
+}
+
+module.exports.generatePdf = function(questions) {
+	pdf.exportPdf(questions);
 }
