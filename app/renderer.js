@@ -7,6 +7,7 @@ const cheerio = require('cheerio')
 
 window.$ = window.jQuery = require('jquery')
 window.Tether = require('tether')
+window.Popper = require('popper.js')
 window.Bootstrap = require('bootstrap')
 
 let webRoot = path.dirname(__dirname)
@@ -33,7 +34,8 @@ let dom = O.html()
 $('body').html(dom)
 
 $('document').ready(function () {
-  window.model.getQuestions()
+	let questions = window.model.getQuestions()
+  window.view.showQuestions(questions)
 
 	$('#edit-question-submit').click(function (e) {
     e.preventDefault()
@@ -54,4 +56,9 @@ $('document').ready(function () {
       })
     }
   })
+
+	$('#generate-pdf').click(function() {
+		console.log('calling generatePdf with questions', questions)
+		window.view.generatePdf(questions)
+	});
 })
