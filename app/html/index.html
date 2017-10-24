@@ -3,14 +3,19 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/custom.css">
     <title>Question Bank</title>
   </head>
-  <body>
+  <body ng-app="questionBank">
+		<ul>
+			<li>
+				<a href="#/!">Questions</a>
+			</li>
+			<li>
+				<a href="#!add">Add Question</a>
+			</li>
+		</ul>
+		<div ng-view></div>
   </body>
   <script src="../renderer.js"></script>
 </html>
