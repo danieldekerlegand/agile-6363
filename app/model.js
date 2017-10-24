@@ -182,6 +182,108 @@ module.exports.deleteQuestion = function (qid, callback) {
     }
   }
 }
+/*
+  Insert or update form data in the database.
+*/
+module.exports.saveFormData = function (tableName, keyValue, callback) {
+	console.log('called saveFormData', keyValue);
+  if (keyValue.columns.length > 0) {
+    let db = SQL.dbOpen(window.model.db)
+    if (db !== null) {
+      let query = 'INSERT OR REPLACE INTO `' + tableName
+      query += '` (`' + keyValue.columns.join('`, `') + '`)'
+      query += ' VALUES (' + _placeHoldersString(keyValue.values.length) + ')'
+      let statement = db.prepare(query)
+      try {
+        if (statement.run(keyValue.values)) {
+          $('#' + keyValue.columns.join(', #'))
+          .addClass('form-control-success')
+          .animate({class: 'form-control-success'}, 1500, function () {
+            if (typeof callback === 'function') {
+              callback()
+            }
+          })
+        } else {
+          console.log('model.saveFormData', 'Query failed for', keyValue.values)
+        }
+      } catch (error) {
+        console.log('model.saveFormData', error.message)
+      } finally {
+        SQL.dbClose(db, window.model.db)
+      }
+    }
+  }
+}
+/*
+  Populates the answer List.
+*/
+module.exports.getOptions = function () {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'SELECT * FROM `options` ORDER BY `option_id` ASC'
+    try {
+      let row = db.exec(query)
+      if (row !== undefined && row.length > 0) {
+        row = _rowsFromSqlDataObject(row[0])
+				return row
+				// console.log(row)
+        // view.showOptions(row)
+      }
+    } catch (error) {
+      console.log('model.getOptions', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*
+  Fetch an answer's data from the database.
+*/
+module.exports.getOptions = function (oid) {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'SELECT * FROM `options` WHERE `option_id` IS ?'
+    let statement = db.prepare(query, [oid])
+    try {
+      if (statement.step()) {
+        let values = [statement.get()]
+        let columns = statement.getColumnNames()
+        return _rowsFromSqlDataObject({values: values, columns: columns})
+      } else {
+        console.log('model.getOptions', 'No data found for option_id =', oid)
+      }
+    } catch (error) {
+      console.log('model.getOption', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*
+  Delete an answer's data from the database.
+*/
+module.exports.deleteOptions = function (oid, callback) {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'DELETE FROM `options` WHERE `option_id` IS ?'
+    let statement = db.prepare(query)
+    try {
+      if (statement.run([oid])) {
+        if (typeof callback === 'function') {
+          callback()
+        }
+      } else {
+        console.log('model.deleteOptions', 'No data found for option_id =', oid)
+      }
+    } catch (error) {
+      console.log('model.deleteOptions', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
 
 /*
   Insert or update form data in the database.
