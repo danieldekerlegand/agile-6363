@@ -115,17 +115,20 @@ module.exports.initDb = function (appPath, callback) {
   Insert or update form data in the database.
 */
 module.exports.saveFormData = function (tableName, keyValue, callback) {
-	console.log('called saveFormData', keyValue);
   if (keyValue.columns.length > 0) {
     let db = SQL.dbOpen(window.model.db)
     if (db !== null) {
       let query = 'INSERT OR REPLACE INTO `' + tableName
       query += '` (`' + keyValue.columns.join('`, `') + '`)'
       query += ' VALUES (' + _placeHoldersString(keyValue.values.length) + ')'
-      let statement = db.prepare(query)
+			console.log(query);
+			console.log(keyValue.values);
+			let statement = db.prepare(query)
       try {
         if (statement.run(keyValue.values)) {
-					console.log('saveFormData success');
+					if (typeof callback === "function") {
+						callback();
+					}
         } else {
           console.log('model.saveFormData', 'Query failed for', keyValue.values)
         }
@@ -136,6 +139,16 @@ module.exports.saveFormData = function (tableName, keyValue, callback) {
       }
     }
   }
+}
+
+module.exports.getLastQuestionId = function() {
+	let db = SQL.dbOpen(window.model.db)
+	if (db !== null) {
+		let lastInsert = db.exec("select last_insert_rowid();");
+		let lastQuestion = _rowsFromSqlDataObject(lastInsert[0]);
+		let lastQuestionId = lastQuestion["0"]["last_insert_rowid()"];
+		return lastQuestionId;
+	}
 }
 
 /*
