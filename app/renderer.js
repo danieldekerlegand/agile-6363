@@ -36,10 +36,18 @@ angularApp.controller('MainCtrl', ['$route', '$routeParams', '$location',
 
 angularApp.controller('QuestionsCtrl', function($scope) {
 	$scope.questions = model.getQuestions();
+	$scope.deleteQuestion = function(qid) {
+		model.deleteQuestion(qid);
+		$scope.questions = model.getQuestions();
+	}
 });
 
 angularApp.controller('AddQuestionCtrl', function($scope) {
-
+	$scope.question = {};
+	$scope.submit = function() {
+		let formData = {columns: ['question_text', 'question_type', 'course_id'], values: [$scope.question.text, "default", 1]};
+		model.saveFormData('questions', formData);
+	};
 });
 
 angularApp.controller('EditQuestionCtrl', function($scope) {

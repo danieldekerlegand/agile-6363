@@ -1,7 +1,5 @@
 <h2>Add Question</h2>
-<form id="edit-question-form" action="#" method="POST">
-  <label for="first_name">Question Text</label>
-  <input type="text" id="question_text">
-
+<form id="edit-question-form" ng-submit="submit()">
+  <label for="first_name">Question Text</label> <input type="text" id="question_text" ng-model="question.text">
   <button id="edit-question-submit" type="submit">Add</button>
 </form>
