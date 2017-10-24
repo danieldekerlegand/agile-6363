@@ -21,13 +21,15 @@
     "electron": "~1.6.2"
   },
   "dependencies": {
+    "angular": "^1.6.6",
+    "angular-route": "^1.6.6",
     "bootstrap": "^4.0.0-beta",
     "cheerio": "^1.0.0-rc.2",
     "jquery": "^3.2.1",
     "pdfkit": "^0.8.3",
+    "popper.js": "1.11.0",
     "sql.js": "^0.4.0",
-    "tether": "^1.4.0",
-		"popper.js": "1.11.0"
+    "tether": "^1.4.0"
   },
   "standard": {
     "globals": [
