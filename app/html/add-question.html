@@ -8,6 +8,10 @@
 		<input type="radio" id="questionType2" name="type" value="multiple" ng-model="question.type"> <label for="questionType2">Multiple Choice</label>
 	</div>
 
+	<div ng-if="showFreeform()">
+		<textarea placeholder="Add an answer..." name="context" ng-model="option.context"></textarea>
+	</div>
+
 	<div ng-if="showOptions()">
 		<h5>Options</h5>
 		<ol>

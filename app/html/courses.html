@@ -1,0 +1,6 @@
+<h2>Courses</h2>
+<ul id="courses-list" class="container">
+	<li ng-repeat="course in courses">
+		{{ course }} <button ng-click="deleteCourse(course.course_id)">Delete</button>
+	</li>
+</ul>

@@ -116,13 +116,13 @@ module.exports.initDb = function (appPath, callback) {
 */
 module.exports.saveFormData = function (tableName, keyValue, callback) {
   if (keyValue.columns.length > 0) {
+		console.log('tableName', tableName);
+		console.log('keyValue', keyValue);
     let db = SQL.dbOpen(window.model.db)
     if (db !== null) {
       let query = 'INSERT OR REPLACE INTO `' + tableName
       query += '` (`' + keyValue.columns.join('`, `') + '`)'
       query += ' VALUES (' + _placeHoldersString(keyValue.values.length) + ')'
-			console.log(query);
-			console.log(keyValue.values);
 			let statement = db.prepare(query)
       try {
         if (statement.run(keyValue.values)) {

@@ -42,6 +42,22 @@ angularApp.controller('MainCtrl', ['$route', '$routeParams', '$location',
     this.$routeParams = $routeParams;
 	}])
 
+angularApp.controller('CoursesCtrl', function($scope) {
+	$scope.courses = model.getCourses();
+	$scope.deleteCourse = function(cid) {
+		model.deleteCourse(cid);
+		// $scope.questions = model.getQuestions();
+	}
+});
+
+angularApp.controller('AddCourseCtrl', function($scope) {
+	$scope.course = {};
+	$scope.submit = function() {
+		let formData = {columns: ['course_name'], values: [$scope.course.name]};
+		model.saveFormData('courses', formData);
+	};
+});
+
 angularApp.controller('QuestionsCtrl', function($scope) {
 	$scope.questions = model.getQuestions();
 	$scope.deleteQuestion = function(qid) {
@@ -56,9 +72,9 @@ angularApp.controller('AddQuestionCtrl', function($scope) {
 	$scope.submit = function() {
 		let formData = {columns: ['question_text', 'question_type', 'course_id'], values: [$scope.question.text, $scope.question.type, 1]};
 		model.saveFormData('questions', formData, function() {
-			let questionId = model.getLastQuestionId();
+			// let questionId = model.getLastQuestionId();
 			$scope.options.forEach(function(option) {
-				let optionFormData = {columns: ['context', 'question_id', 'is_correct'], values: [option.context, questionId, option.isCorrect]};
+				let optionFormData = {columns: ['context', 'question_id', 'is_correct'], values: [option.context, 1, 1]};
 				model.saveFormData('options', optionFormData);
 			});
 		});
@@ -68,6 +84,9 @@ angularApp.controller('AddQuestionCtrl', function($scope) {
 	};
 	$scope.deleteOption = function(index) {
 		$scope.options.splice(index, 1);
+	};
+	$scope.showFreeform = function() {
+		return $scope.question.type === 'text';
 	};
 	$scope.showOptions = function() {
 		return $scope.question.type === 'multiple';
