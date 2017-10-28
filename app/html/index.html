@@ -7,15 +7,25 @@
     <title>Question Bank</title>
   </head>
   <body ng-app="questionBank">
+		
 		<ul>
 			<li>
-				<a href="#/!">Questions</a>
+				<a href="#/!">Courses</a>
 			</li>
 			<li>
-				<a href="#!add">Add Question</a>
+				<a href="#!add-course">Add Course</a>
+			</li>
+			<li>
+				<a href="#!questions">Questions</a>
+			</li>
+			<li>
+				<a href="#!add-question">Add Question</a>
 			</li>
 		</ul>
+
+		<!-- this changes dynamically based on which view is rendered -->
 		<div ng-view></div>
+
   </body>
   <script src="../renderer.js"></script>
 </html>
