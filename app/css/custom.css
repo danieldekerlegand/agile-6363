@@ -1,0 +1,17 @@
+
+.brand-logo{
+	width: 22em !important; 
+}
+
+.text-style{
+	font-weight: 600;
+}
+
+.container{
+	width: 100%;
+}
+
+.side-nav{
+    top: 65px;
+    width: 250px;
+}
