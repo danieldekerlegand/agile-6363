@@ -1,6 +1,9 @@
-<h2>Questions</h2>
+<span ng-bind="course.name"><h3 class="teal-text text-darken-1 text-style">{{course.courses_name}} QB</h3></span>
 <ul id="questions-list" class="container">
 	<li ng-repeat="question in questions">
-		{{ question }} <button ng-click="deleteQuestion(question.question_id)">Delete</button>
+		{{ question.question_text }} 
+		<button ng-click="deleteQuestion(question.question_id)">Delete</button>
+		<button ng-click="deleteQuestion(question.question_id)">Edit</button>
+		<button ng-click="deleteQuestion(question.question_id)">Add</button>
 	</li>
 </ul>

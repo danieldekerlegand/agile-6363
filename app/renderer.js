@@ -20,6 +20,9 @@ angularApp.factory('navigation', function() {
 angularApp.config(function($routeProvider) {
   $routeProvider
 		.when('/', {
+			templateUrl: 'landing-page.html'
+		})
+		.when('/courses', {
 			templateUrl: 'courses.html',
 			controller: 'CoursesCtrl'
 		})
@@ -61,6 +64,7 @@ angularApp.controller('CoursesCtrl', function($scope, navigation) {
 		return !navigation.show;
 	};
 	$scope.coursesExist = function() {
+    // let courses = model.getCourses();
 		let courses = [];
 		if (courses.length <= 0) {
 			navigation.show = false;
@@ -114,6 +118,7 @@ angularApp.controller('AddQuestionCtrl', function($scope) {
 	$scope.showOptions = function() {
 		return $scope.question.type === 'multiple';
 	};
+
 });
 
 angularApp.controller('EditQuestionCtrl', function($scope) {

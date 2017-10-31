@@ -3,33 +3,34 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../css/custom.css">
+    <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
+
     <title>Question Bank</title>
   </head>
   <body ng-app="questionBank">
-
-		<div ng-controller="NavCtrl">
-			<div ng-if="showNavigation()">
-				<ul>
-					<li>
-						<a href="#/!">Courses</a>
-					</li>
-					<li>
-						<a href="#!add-course">Add Course</a>
-					</li>
-					<li>
-						<a href="#!questions">Questions</a>
-					</li>
-					<li>
-						<a href="#!add-question">Add Question</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+		<!-- <ul>
+			<li>
+				<a href="#/!">Courses</a>
+			</li>
+			<li>
+				<a href="#!add-course">Add Course</a>
+			</li>
+			<li>
+				<a href="#!questions">Questions</a>
+			</li>
+			<li>
+				<a href="#!add-question">Add Question</a>
+			</li>
+		</ul> -->
 
 		<!-- this changes dynamically based on which view is rendered -->
-		<div ng-view></div>
-
+		<div ng-view>
+			
+		</div>
+  	
   </body>
   <script src="../renderer.js"></script>
+   
 </html>
