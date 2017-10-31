@@ -1,0 +1,37 @@
+<div class="row">
+	<div class="col s12 m4 l3"> 
+    	<ul class="side-nav fixed">
+		    <li><a href="">Courses</a></li>
+		    <div class="divider"></div>
+		</ul>
+      </div>
+    <div class="col s4 m8 l9"> 
+    
+    	<h3 class="teal-text text-darken-1 text-style">Courses</h3>
+ 
+		<div class="row">
+	        <div class="col s12 m6 l4">
+	          <div class="card white">
+	            <div class="card-content teal-text text-darken-1 text-style">
+	              <h6 ng-bind="course.id">Course ID</h6>
+	              <span ng-bind="course.name" class="card-title">Agile Software Engineering</span>
+	            </div>
+	            <div class="card-action">
+	              <a href="#!add-question">Question Bank</a>
+	              <a href="#!questions">Answer Set</a>
+	            </div>
+	          </div>
+	        </div>
+	    </div>  
+	</div>
+
+
+
+		<!-- <ul id="courses-list">
+			<span ng-bind="course.name"></span>
+			<li ng-repeat="course in courses">
+				{{ course }} <button ng-click="deleteCourse(course.course_id)">Delete</button>
+			</li>
+		</ul>
+ -->     	
+</div>

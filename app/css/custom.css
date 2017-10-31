@@ -1,22 +1,17 @@
-@media (min-width: 768px) {
-  label {
-    text-align: right;
-  }
+
+.brand-logo{
+	width: 22em !important; 
 }
 
-#add-person,
-#edit-person {
-  display: none;
+.text-style{
+	font-weight: 600;
 }
-.icon {
-  width: 1em;
+
+.container{
+	width: 100%;
 }
-h2 {
-  padding: 0.25em 0.9em;
-}
-#people-list {
-  margin-left: 0.9em;
-}
-#people-list img {
-  margin: 0 0.5em;
+
+.side-nav{
+    top: 65px;
+    width: 250px;
 }

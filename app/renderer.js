@@ -3,62 +3,124 @@
 const fs = require('fs')
 const path = require('path')
 const app = require('electron').remote.app
-const cheerio = require('cheerio')
-
-window.$ = window.jQuery = require('jquery')
-window.Tether = require('tether')
-window.Popper = require('popper.js')
-window.Bootstrap = require('bootstrap')
 
 let webRoot = path.dirname(__dirname)
-window.view = require(path.join(webRoot, 'view.js'))
 window.model = require(path.join(webRoot, 'model.js'))
 window.model.db = path.join(app.getPath('userData'), 'example.db')
+window.angular = require('angular')
 
-// Compose the DOM from separate HTML concerns; each from its own file.
-let htmlPath = path.join(app.getAppPath(), 'app', 'html')
-let body = fs.readFileSync(path.join(htmlPath, 'body.html'), 'utf8')
-let navBar = fs.readFileSync(path.join(htmlPath, 'nav-bar.html'), 'utf8')
-let menu = fs.readFileSync(path.join(htmlPath, 'menu.html'), 'utf8')
-let questions = fs.readFileSync(path.join(htmlPath, 'questions.html'), 'utf8')
-let editQuestion = fs.readFileSync(path.join(htmlPath, 'edit-question.html'), 'utf8')
+var angularApp = angular.module("questionBank", [require('angular-route')])
 
-let O = cheerio.load(body)
-O('#nav-bar').append(navBar)
-O('#menu').append(menu)
-O('#questions').append(questions)
-O('#edit-question').append(editQuestion)
+angularApp.factory('navigation', function() {
+  return {
+    show: true
+  };
+});
 
-// Pass the DOM from Cheerio to jQuery.
-let dom = O.html()
-$('body').html(dom)
-
-$('document').ready(function () {
-	let questions = window.model.getQuestions()
-  window.view.showQuestions(questions)
-
-	$('#edit-question-submit').click(function (e) {
-    e.preventDefault()
-    let ok = true
-    $('#question_text').each(function (idx, obj) {
-      if ($(obj).val() === '') {
-        $(obj).parent().removeClass('has-success').addClass('has-error')
-        ok = false
-      } else {
-        $(obj).parent().addClass('has-success').removeClass('has-error')
-      }
-    })
-    if (ok) {
-      let formId = $(e.target).parents('form').attr('id')
-      let keyValue = window.view.getFormFieldValues(formId)
-      window.model.saveFormData('questions', keyValue, function () {
-        window.model.getQuestions()
-      })
-    }
-  })
-
-	$('#generate-pdf').click(function() {
-		console.log('calling generatePdf with questions', questions)
-		window.view.generatePdf(questions)
-	});
+angularApp.config(function($routeProvider) {
+  $routeProvider
+		.when('/', {
+			templateUrl: 'landing-page.html'
+		})
+		.when('/courses', {
+			templateUrl: 'courses.html',
+			controller: 'CoursesCtrl'
+		})
+		.when('/add-course', {
+			templateUrl: 'add-course.html',
+			controller: 'AddCourseCtrl'
+		})
+		.when('/questions', {
+	    templateUrl: 'questions.html',
+	    controller: 'QuestionsCtrl'
+	  })
+		.when('/add-question', {
+			templateUrl: 'add-question.html',
+			controller: 'AddQuestionCtrl'
+		})
+		.when('/edit-question', {
+			templateUrl: 'edit-question.html',
+			controller: 'EditQuestionCtrl'
+		})
 })
+
+angularApp.controller('MainCtrl', ['$route', '$routeParams', '$location',
+  function($route, $routeParams, $location) {
+    this.$route = $route;
+    this.$location = $location;
+    this.$routeParams = $routeParams;
+	}])
+
+angularApp.controller('NavCtrl', function($scope, navigation) {
+	$scope.showNavigation = function() {
+		return true;
+	}
+});
+
+angularApp.controller('CoursesCtrl', function($scope, navigation) {
+	// $scope.courses = model.getCourses();
+	$scope.courses = [];
+	$scope.showOnboarding = function() {
+		return !navigation.show;
+	};
+	$scope.coursesExist = function() {
+    // let courses = model.getCourses();
+		let courses = [];
+		if (courses.length <= 0) {
+			navigation.show = false;
+		} else {
+			navigation.show = true;
+		}
+	};
+	$scope.deleteCourse = function(cid) {
+		model.deleteCourse(cid);
+		// $scope.questions = model.getQuestions();
+	};
+});
+
+angularApp.controller('AddCourseCtrl', function($scope) {
+	$scope.course = {};
+	$scope.submit = function() {
+		let formData = {columns: ['course_name'], values: [$scope.course.name]};
+		model.saveFormData('courses', formData);
+	};
+});
+
+angularApp.controller('QuestionsCtrl', function($scope) {
+	$scope.questions = model.getQuestions();
+	$scope.deleteQuestion = function(qid) {
+		model.deleteQuestion(qid);
+		$scope.questions = model.getQuestions();
+	}
+});
+
+angularApp.controller('AddQuestionCtrl', function($scope) {
+	$scope.question = {};
+	$scope.options = [{context: "", isCorrect: 0, question_id: null}];
+	$scope.submit = function() {
+		let formData = {columns: ['question_text', 'question_type', 'course_id'], values: [$scope.question.text, $scope.question.type, 1]};
+		model.saveFormData('questions', formData, function(questionId) {
+			$scope.options.forEach(function(option) {
+				let optionFormData = {columns: ['context', 'question_id', 'is_correct'], values: [option.context, questionId, option.isCorrect]};
+				model.saveFormData('options', optionFormData);
+			});
+		});
+	};
+	$scope.addOption = function() {
+		$scope.options.push({context: "", isCorrect: 0, question_id: null});
+	};
+	$scope.deleteOption = function(index) {
+		$scope.options.splice(index, 1);
+	};
+	$scope.showFreeform = function() {
+		return $scope.question.type === 'text';
+	};
+	$scope.showOptions = function() {
+		return $scope.question.type === 'multiple';
+	};
+
+});
+
+angularApp.controller('EditQuestionCtrl', function($scope) {
+
+});
