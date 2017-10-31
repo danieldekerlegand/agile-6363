@@ -11,6 +11,12 @@ window.angular = require('angular')
 
 var angularApp = angular.module("questionBank", [require('angular-route')])
 
+angularApp.factory('navigation', function() {
+  return {
+    show: true
+  };
+});
+
 angularApp.config(function($routeProvider) {
   $routeProvider
 		.when('/', {
@@ -42,12 +48,30 @@ angularApp.controller('MainCtrl', ['$route', '$routeParams', '$location',
     this.$routeParams = $routeParams;
 	}])
 
-angularApp.controller('CoursesCtrl', function($scope) {
-	$scope.courses = model.getCourses();
+angularApp.controller('NavCtrl', function($scope, navigation) {
+	$scope.showNavigation = function() {
+		return true;
+	}
+});
+
+angularApp.controller('CoursesCtrl', function($scope, navigation) {
+	// $scope.courses = model.getCourses();
+	$scope.courses = [];
+	$scope.showOnboarding = function() {
+		return !navigation.show;
+	};
+	$scope.coursesExist = function() {
+		let courses = [];
+		if (courses.length <= 0) {
+			navigation.show = false;
+		} else {
+			navigation.show = true;
+		}
+	};
 	$scope.deleteCourse = function(cid) {
 		model.deleteCourse(cid);
 		// $scope.questions = model.getQuestions();
-	}
+	};
 });
 
 angularApp.controller('AddCourseCtrl', function($scope) {
@@ -71,10 +95,9 @@ angularApp.controller('AddQuestionCtrl', function($scope) {
 	$scope.options = [{context: "", isCorrect: 0, question_id: null}];
 	$scope.submit = function() {
 		let formData = {columns: ['question_text', 'question_type', 'course_id'], values: [$scope.question.text, $scope.question.type, 1]};
-		model.saveFormData('questions', formData, function() {
-			// let questionId = model.getLastQuestionId();
+		model.saveFormData('questions', formData, function(questionId) {
 			$scope.options.forEach(function(option) {
-				let optionFormData = {columns: ['context', 'question_id', 'is_correct'], values: [option.context, 1, 1]};
+				let optionFormData = {columns: ['context', 'question_id', 'is_correct'], values: [option.context, questionId, option.isCorrect]};
 				model.saveFormData('options', optionFormData);
 			});
 		});

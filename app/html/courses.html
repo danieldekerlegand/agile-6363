@@ -1,6 +1,12 @@
-<h2>Courses</h2>
-<ul id="courses-list" class="container">
-	<li ng-repeat="course in courses">
-		{{ course }} <button ng-click="deleteCourse(course.course_id)">Delete</button>
-	</li>
-</ul>
+<div ng-if="showOnboarding()">
+	<h2>Create a Course</h2>
+</div>
+
+<div ng-if="coursesExist()">
+	<h2>Courses</h2>
+	<ul id="courses-list" class="container">
+		<li ng-repeat="course in courses">
+			{{ course }} <button ng-click="deleteCourse(course.course_id)">Delete</button>
+		</li>
+	</ul>
+</div>
