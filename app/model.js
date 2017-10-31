@@ -116,8 +116,6 @@ module.exports.initDb = function (appPath, callback) {
 */
 module.exports.saveFormData = function (tableName, keyValue, callback) {
   if (keyValue.columns.length > 0) {
-		console.log('tableName', tableName);
-		console.log('keyValue', keyValue);
     let db = SQL.dbOpen(window.model.db)
     if (db !== null) {
       let query = 'INSERT OR REPLACE INTO `' + tableName
@@ -126,29 +124,24 @@ module.exports.saveFormData = function (tableName, keyValue, callback) {
 			let statement = db.prepare(query)
       try {
         if (statement.run(keyValue.values)) {
-					if (typeof callback === "function") {
-						callback();
-					}
+					console.log('model.saveFormData', 'Query succeeded for', keyValue.values)
         } else {
           console.log('model.saveFormData', 'Query failed for', keyValue.values)
         }
       } catch (error) {
         console.log('model.saveFormData', error.message)
       } finally {
+				let lastInsert = db.exec("select last_insert_rowid();");
+				let lastInsertObject = _rowsFromSqlDataObject(lastInsert[0]);
+				let lastInsertId = lastInsertObject["0"]["last_insert_rowid()"];
+
         SQL.dbClose(db, window.model.db)
+				if (typeof callback === "function") {
+					callback(lastInsertId);
+				}
       }
     }
   }
-}
-
-module.exports.getLastQuestionId = function() {
-	let db = SQL.dbOpen(window.model.db)
-	if (db !== null) {
-		let lastInsert = db.exec("select last_insert_rowid();");
-		let lastQuestion = _rowsFromSqlDataObject(lastInsert[0]);
-		let lastQuestionId = lastQuestion["0"]["last_insert_rowid()"];
-		return lastQuestionId;
-	}
 }
 
 /*
