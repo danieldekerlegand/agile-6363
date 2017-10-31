@@ -14,6 +14,9 @@ var angularApp = angular.module("questionBank", [require('angular-route')])
 angularApp.config(function($routeProvider) {
   $routeProvider
 		.when('/', {
+			templateUrl: 'landing-page.html'
+		})
+		.when('/courses', {
 			templateUrl: 'courses.html',
 			controller: 'CoursesCtrl'
 		})
@@ -46,7 +49,7 @@ angularApp.controller('CoursesCtrl', function($scope) {
 	$scope.courses = model.getCourses();
 	$scope.deleteCourse = function(cid) {
 		model.deleteCourse(cid);
-		// $scope.questions = model.getQuestions();
+	//$scope.questions = model.getQuestions();
 	}
 });
 
@@ -91,6 +94,7 @@ angularApp.controller('AddQuestionCtrl', function($scope) {
 	$scope.showOptions = function() {
 		return $scope.question.type === 'multiple';
 	};
+
 });
 
 angularApp.controller('EditQuestionCtrl', function($scope) {

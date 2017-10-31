@@ -1,6 +1,7 @@
-CREATE TABLE "course" (
+CREATE TABLE "courses" (
 	"course_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"course_name" TEXT(255,0) NOT NULL
+	"course_number" INTEGER NOT NULL
 );
 CREATE TABLE "questions" (
 	"question_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
