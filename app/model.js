@@ -183,7 +183,7 @@ module.exports.getQuestion = function (qid) {
 /*
   Fetch a question's  by course_id  from the database.
 */
-module.exports.getQuestion = function (co_id) {
+module.exports.getQuestionForCourse = function (co_id) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
     let query = 'SELECT * FROM `questions` WHERE `course_id`=(SELECT course_id from course )'
@@ -194,10 +194,10 @@ module.exports.getQuestion = function (co_id) {
         let columns = statement.getColumnNames()
         return _rowsFromSqlDataObject({values: values, columns: columns})
       } else {
-        console.log('model.getQuestion', 'No data found for course_id =', co_id)
+        console.log('model.getQuestionForCourse', 'No data found for course_id =', co_id)
       }
     } catch (error) {
-      console.log('model.getQuestion', error.message)
+      console.log('model.getQuestionForCourse', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -239,12 +239,36 @@ module.exports.getOptions = function () {
       let row = db.exec(query)
       if (row !== undefined && row.length > 0) {
         row = _rowsFromSqlDataObject(row[0])
-				return row
-				// console.log(row)
+        return row
+        // console.log(row)
         // view.showOptions(row)
       }
     } catch (error) {
       console.log('model.getOptions', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*
+  Fetch an option's data by question_id from the database.
+*/
+module.exports.getOptionsForQuestion = function (qid) {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'SELECT * FROM `options` WHERE `question_id`=(SELECT question_id from questions)'
+    let statement = db.prepare(query, [qid])
+    try {
+      if (statement.step()) {
+        let values = [statement.get()]
+        let columns = statement.getColumnNames()
+        return _rowsFromSqlDataObject({values: values, columns: columns})
+      } else {
+        console.log('model.getOptionsForQuestion', 'No data found for question_id =', qid)
+      }
+    } catch (error) {
+      console.log('model.getOptionsForQuestion', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -265,7 +289,7 @@ module.exports.getOption = function (oid) {
         let columns = statement.getColumnNames()
         return _rowsFromSqlDataObject({values: values, columns: columns})
       } else {
-        console.log('model.getOptions', 'No data found for option_id =', oid)
+        console.log('model.getOption', 'No data found for option_id =', oid)
       }
     } catch (error) {
       console.log('model.getOption', error.message)
@@ -276,7 +300,7 @@ module.exports.getOption = function (oid) {
 }
 
 /*
-  Delete an answer's data from the database.
+  Delete an answer's data of a particular question from the database.
 */
 module.exports.deleteOption = function (oid, callback) {
   let db = SQL.dbOpen(window.model.db)
@@ -289,80 +313,10 @@ module.exports.deleteOption = function (oid, callback) {
           callback()
         }
       } else {
-        console.log('model.deleteOptions', 'No data found for option_id =', oid)
+        console.log('model.deleteOption', 'No data found for option_id =', oid)
       }
     } catch (error) {
-      console.log('model.deleteOptions', error.message)
-    } finally {
-      SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-
-/*
-  Populates the answer List.
-*/
-module.exports.getOptions = function () {
-  let db = SQL.dbOpen(window.model.db)
-  if (db !== null) {
-    let query = 'SELECT * FROM `options` ORDER BY `option_id` ASC'
-    try {
-      let row = db.exec(query)
-      if (row !== undefined && row.length > 0) {
-        row = _rowsFromSqlDataObject(row[0])
-				return row
-				// console.log(row)
-        // view.showOptions(row)
-      }
-    } catch (error) {
-      console.log('model.getOptions', error.message)
-    } finally {
-      SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-
-/*
-  Fetch an option's data by question_id from the database.
-*/
-module.exports.getOptions = function (qid) {
-  let db = SQL.dbOpen(window.model.db)
-  if (db !== null) {
-    let query = 'SELECT * FROM `options` WHERE `question_id`=(SELECT question_id from questions)'
-    let statement = db.prepare(query, [qid])
-    try {
-      if (statement.step()) {
-        let values = [statement.get()]
-        let columns = statement.getColumnNames()
-        return _rowsFromSqlDataObject({values: values, columns: columns})
-      } else {
-        console.log('model.getOptions', 'No data found for question_id =', qid)
-      }
-    } catch (error) {
-      console.log('model.getOptions', error.message)
-    } finally {
-      SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-/*
-  Delete an answer's data from the database.
-*/
-module.exports.deleteOptions = function (oid, callback) {
-  let db = SQL.dbOpen(window.model.db)
-  if (db !== null) {
-    let query = 'DELETE FROM `options` WHERE `option_id` IS ?'
-    let statement = db.prepare(query)
-    try {
-      if (statement.run([oid])) {
-        if (typeof callback === 'function') {
-          callback()
-        }
-      } else {
-        console.log('model.deleteOptions', 'No data found for option_id =', oid)
-      }
-    } catch (error) {
-      console.log('model.deleteOptions', error.message)
+      console.log('model.deleteOption', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -372,10 +326,10 @@ module.exports.deleteOptions = function (oid, callback) {
 /*
   Populates the course List.
 */
-module.exports.getcourse = function () {
+module.exports.getCourses = function () {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
-    let query = 'SELECT * FROM `course` ORDER BY `course_id` ASC'
+    let query = 'SELECT * FROM `courses` ORDER BY `course_id` ASC'
     try {
       let row = db.exec(query)
       if (row !== undefined && row.length > 0) {
@@ -385,7 +339,7 @@ module.exports.getcourse = function () {
         // view.showQuestions(row)
       }
     } catch (error) {
-      console.log('model.getcourse', error.message)
+      console.log('model.getCourses', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -395,10 +349,10 @@ module.exports.getcourse = function () {
 /*
   Fetch a course data from the database.
 */
-module.exports.getcourse = function (co_id) {
+module.exports.getCourse = function (co_id) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
-    let query = 'SELECT * FROM `course` WHERE `course_id` IS ?'
+    let query = 'SELECT * FROM `courses` WHERE `course_id` IS ?'
     let statement = db.prepare(query, [co_id])
     try {
       if (statement.step()) {
@@ -406,10 +360,10 @@ module.exports.getcourse = function (co_id) {
         let columns = statement.getColumnNames()
         return _rowsFromSqlDataObject({values: values, columns: columns})
       } else {
-        console.log('model.getcourse', 'No data found for course_id =', co_id)
+        console.log('model.getCourse', 'No data found for course_id =', co_id)
       }
     } catch (error) {
-      console.log('model.getcourse', error.message)
+      console.log('model.getCourse', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
@@ -418,55 +372,23 @@ module.exports.getcourse = function (co_id) {
 /*
   Delete a course's data from the database.
 */
-module.exports.deletecourse = function (co_id, callback) {
+module.exports.deleteCourse = function (co_id, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
-    let query = 'DELETE FROM `course` WHERE `course_id` IS ?'
+    let query = 'DELETE FROM `courses` WHERE `course_id` IS ?'
     let statement = db.prepare(query)
     try {
       if (statement.run([co_id])) {
         if (typeof callback === 'function') {
-          callback()
+          callback();
         }
       } else {
-        console.log('model.deletecourse', 'No data found for course_id =', co_id)
+        console.log('model.deleteCourse', 'No data found for course_id =', co_id)
       }
     } catch (error) {
-      console.log('model.deletecourse', error.message)
+      console.log('model.deleteCourse', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
-    }
-  }
-}
-/*
-  Insert or update form data in the database.
-*/
-module.exports.saveFormData = function (tableName, keyValue, callback) {
-	console.log('called saveFormData', keyValue);
-  if (keyValue.columns.length > 0) {
-    let db = SQL.dbOpen(window.model.db)
-    if (db !== null) {
-      let query = 'INSERT OR REPLACE INTO `' + tableName
-      query += '` (`' + keyValue.columns.join('`, `') + '`)'
-      query += ' VALUES (' + _placeHoldersString(keyValue.values.length) + ')'
-      let statement = db.prepare(query)
-      try {
-        if (statement.run(keyValue.values)) {
-          $('#' + keyValue.columns.join(', #'))
-          .addClass('form-control-success')
-          .animate({class: 'form-control-success'}, 1500, function () {
-            if (typeof callback === 'function') {
-              callback()
-            }
-          })
-        } else {
-          console.log('model.saveFormData', 'Query failed for', keyValue.values)
-        }
-      } catch (error) {
-        console.log('model.saveFormData', error.message)
-      } finally {
-        SQL.dbClose(db, window.model.db)
-      }
     }
   }
 }

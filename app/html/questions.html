@@ -1,9 +1,31 @@
-<span ng-bind="course.name"><h3 class="teal-text text-darken-1 text-style">{{course.courses_name}} QB</h3></span>
-<ul id="questions-list" class="container">
-	<li ng-repeat="question in questions">
-		{{ question.question_text }} 
-		<button ng-click="deleteQuestion(question.question_id)">Delete</button>
-		<button ng-click="deleteQuestion(question.question_id)">Edit</button>
-		<button ng-click="deleteQuestion(question.question_id)">Add</button>
-	</li>
-</ul>
+<!-- <span ng-bind="course_name"><h3 class="teal-text text-darken-1 text-style">{{courses.course + "QB"}}  </h3></span> -->
+<!-- Creating the cards of questions -->
+<div class="main-container">
+<div class="row">
+    <h4 class="teal-text text-darken-1">Question Bank</h4>
+    <a href="#!add-question" class="waves-effect waves-light btn">Add Question</a>
+</div>
+
+    <ul>
+        <li ng-repeat="question in questions">
+            <div class = "card-panel questionlist-card-container">
+                <div class="row">
+                    <span class="left">Q{{question.question_id}}  [1pts] </span><h5 class="truncate blue-grey-text text-darken-3">{{question.question_text}}</h5>
+                    <h6 class="teal-text text-lighten-1">Select question to generate question set, answer set or both</h6>
+
+                    <span><input class="with-gap" name="questiononly" type="radio" id="questiononly" /><label for="questiononly">Question Only</label></span>
+                    <span><input class="with-gap" name="answeronly" type="radio" id="With Solution"/><label for="answeronly">With Solution</label></span>
+                </div>
+                <div class="right">
+                    <a class = "btn-floating waves-effect waves-light teal darken-1" >
+                        <i class = "material-icons">mode_edit</i></a>
+                    <a class = "btn-floating waves-effect waves-light teal darken-1" ng-click="deleteQuestion(question.question_id)" >
+                        <i class = "material-icons">delete</i></a>
+                </div>
+            </div>
+            
+        </li>
+        
+    </ul>
+</div>
+

@@ -3,15 +3,60 @@
 	width: 22em !important; 
 }
 
+ .logo {
+  height: 64px !important;
+  /*margin-top: 21px !important;*/
+}  
+
 .text-style{
 	font-weight: 600;
 }
 
-.container{
-	width: 100%;
+.main-container{
+	padding-top: 16px;
+	padding-left: 316px;
+	padding-right: 16px;
 }
 
-.side-nav{
-    top: 65px;
-    width: 250px;
+.nav-wrapper{
+	/*height: 85px !important;*/
+	/*margin-top: -21px;*/
+	background-color: #fff !important;
+	color: #000 !important;
 }
+
+nav{
+	background-color: #fff !important;
+}
+
+.side-nav{ 
+	top:66px !important;
+}
+
+.side-nav li{
+	border-bottom: 1px solid #8c8b8b;
+	box-shadow: 2px 0px 2px #00897b;
+}
+
+.questionlist-card-container{
+	padding-bottom: 5px;
+}
+/*.navbar-material .nav-wrapper .brand-logo .navbar-fixed img {
+    height: 64px !important;
+    width: 8em !important;
+
+}
+*//*.side-nav{
+	top: 100px !important;
+    width: 250px !important;
+}*/
+
+/* header{
+   padding-left: 300px;
+ }
+
+ @media only screen and (max-width : 992px) {
+   header, main, footer {
+     padding-left: 0;
+   }
+ }*/

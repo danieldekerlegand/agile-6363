@@ -4228,7 +4228,7 @@ nav.nav-extended .nav-content {
   line-height: normal;
 }
 
-nav a {
+  nav a {
   color: #fff;
 }
 
@@ -7391,15 +7391,15 @@ input[type=range]:focus::-ms-fill-upper {
 .side-nav li > a {
   color: rgba(0, 0, 0, 0.87);
   display: block;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
-  height: 48px;
-  line-height: 48px;
-  padding: 0 32px;
+  height: 52px;
+  line-height: 52px;
+  padding: 0 34px;
 }
 
 .side-nav li > a:hover {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: #00897b;
 }
 
 .side-nav li > a.btn, .side-nav li > a.btn-large, .side-nav li > a.btn-large, .side-nav li > a.btn-flat, .side-nav li > a.btn-floating {
@@ -7532,7 +7532,7 @@ input[type=range]:focus::-ms-fill-upper {
   left: auto;
 }
 
-@media only screen and (max-width: 992px) {
+/*@media only screen and (max-width: 992px) {
   .side-nav.fixed {
     -webkit-transform: translateX(-105%);
             transform: translateX(-105%);
@@ -7549,7 +7549,7 @@ input[type=range]:focus::-ms-fill-upper {
     padding: 16px 16px 0;
   }
 }
-
+*/
 .side-nav .collapsible-body > ul:not(.collapsible) > li.active,
 .side-nav.fixed .collapsible-body > ul:not(.collapsible) > li.active {
   background-color: #ee6e73;
