@@ -11,16 +11,19 @@ window.angular = require('angular')
 
 var angularApp = angular.module("questionBank", [require('angular-route')])
 
-angularApp.factory('navigation', function() {
+angularApp.factory('courses', function() {
   return {
-    show: true
+    exist: function() {
+    	return model.getCourses() ? true : false;
+    }
   };
 });
 
 angularApp.config(function($routeProvider) {
   $routeProvider
 		.when('/', {
-			templateUrl: 'landing-page.html'
+			templateUrl: 'landing-page.html',
+			controller: 'LandingCtrl'
 		})
 		.when('/courses', {
 			templateUrl: 'courses.html',
@@ -44,45 +47,50 @@ angularApp.config(function($routeProvider) {
 		})
 })
 
-angularApp.controller('MainCtrl', ['$route', '$routeParams', '$location',
-  function($route, $routeParams, $location) {
+angularApp.controller('MainCtrl', ['$window', '$route', '$routeParams', '$location',
+  function($window, $route, $routeParams, $location) {
+  	this.$window = $window;
     this.$route = $route;
     this.$location = $location;
     this.$routeParams = $routeParams;
 	}])
 
-angularApp.controller('NavCtrl', function($scope, navigation) {
-	$scope.showNavigation = function() {
-		return true;
+angularApp.controller('NavCtrl', function($scope, courses) {
+	$scope.coursesExist = function() {
+		return courses.exist();
 	}
 });
 
-angularApp.controller('CoursesCtrl', function($scope, navigation) {
-	// $scope.courses = model.getCourses();
-	$scope.courses = [];
+angularApp.controller('LandingCtrl', function($scope, courses) {
+	$scope.coursesExist = function() {
+		return courses.exist();
+	}
+});
+
+angularApp.controller('CoursesCtrl', function($scope, courses, $location) {
+	$scope.courses = model.getCourses();
 	$scope.showOnboarding = function() {
-		return !navigation.show;
+		return !courses.exist();
 	};
 	$scope.coursesExist = function() {
-    // let courses = model.getCourses();
-		let courses = [];
-		if (courses.length <= 0) {
-			navigation.show = false;
-		} else {
-			navigation.show = true;
-		}
+		return courses.exist();
 	};
 	$scope.deleteCourse = function(cid) {
 		model.deleteCourse(cid);
-		// $scope.questions = model.getQuestions();
+		$scope.courses = model.getCourses();
+		if (!model.getCourses()) {
+			$location.path('/');
+		}
 	};
 });
 
-angularApp.controller('AddCourseCtrl', function($scope) {
+angularApp.controller('AddCourseCtrl', function($scope, $location) {
 	$scope.course = {};
 	$scope.submit = function() {
-		let formData = {columns: ['course_name'], values: [$scope.course.name]};
+		console.log('add course');
+		let formData = {columns: ['course_name', 'course_number'], values: [$scope.course.name, $scope.course.id]};
 		model.saveFormData('courses', formData);
+		$location.path('/courses');
 	};
 });
 
@@ -104,6 +112,8 @@ angularApp.controller('AddQuestionCtrl', function($scope) {
 				let optionFormData = {columns: ['context', 'question_id', 'is_correct'], values: [option.context, questionId, option.isCorrect]};
 				model.saveFormData('options', optionFormData);
 			});
+			$scope.question = {};
+			$scope.options = [{context: "", isCorrect: 0, question_id: null}];
 		});
 	};
 	$scope.addOption = function() {
@@ -122,5 +132,6 @@ angularApp.controller('AddQuestionCtrl', function($scope) {
 });
 
 angularApp.controller('EditQuestionCtrl', function($scope) {
-
+	
 });
+

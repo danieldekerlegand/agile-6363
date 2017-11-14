@@ -1,30 +1,39 @@
-<h2>Add Question</h2>
-<form id="edit-question-form" ng-submit="submit()">
-  <label for="first_name">Question Text</label> <input type="text" id="question_text" ng-model="question.text">
+<div class="main-container">
+<div class="section">
+	<a href="#!add-question" class="waves-effect waves-light btn">Add Question</a>	
+	
+</div>
 
-	Please select your preferred question type:
-	<div>
-		<input type="radio" id="questionType1" name="type" value="text" ng-model="question.type"> <label for="questionType1">Text</label>
-		<input type="radio" id="questionType2" name="type" value="multiple" ng-model="question.type"> <label for="questionType2">Multiple Choice</label>
+<div class="row">
+	<form id="edit-question-form" ng-submit="submit()">
+  		<label for="first_naadd_a_photome">Question Text</label> <input type="text" id="question_text" ng-model="question.text" />
+
+		<h6 class="teal-text text-darken-1">Please select your preferred question type:</h6>
+		
+		<div>
+			<input type="radio" id="questionType1" name="type" value="text" ng-model="question.type"> <label for="questionType1">Text</label>
+			<input type="radio" id="questionType2" name="type" value="multiple" ng-model="question.type"> <label for="questionType2">Multiple Choice</label>
+		</div>
+
+		<div ng-if="showFreeform()">
+			<textarea placeholder="Add an answer..." name="context" ng-model="option.context"></textarea>
+		</div>
+
+		<div ng-if="showOptions()">
+			<h5>Options</h5>
+			<ol>
+				<li ng-repeat="option in options">
+					<input type="text" placeholder="Add an answer option..." name="context" ng-model="options[$index].context" />
+					<input type="checkbox" name="isCorrect" ng-model="options[$index].isCorrect" value="1" /> <label>Correct Answer</label>
+					<button type="button" ng-click="deleteOption($index)">-</button>
+				</li>
+			</ol>
+			<button type="button" ng-click="addOption()">+</button>
+		</div>
+	<div class="section">
+		<!-- <a class="waves-effect waves-light btn" type="submit">Add Question</a> -->
+		<button class="waves-effect waves-light btn" id="edit-question-submit" type="submit">Add Question</button>
 	</div>
-
-	<div ng-if="showFreeform()">
-		<textarea placeholder="Add an answer..." name="context" ng-model="option.context"></textarea>
-	</div>
-
-	<div ng-if="showOptions()">
-		<h5>Options</h5>
-		<ol>
-			<li ng-repeat="option in options">
-				<input type="text" placeholder="Add an answer option..." name="context" ng-model="options[$index].context" />
-				<input type="checkbox" name="isCorrect" ng-model="options[$index].isCorrect" value="1" /> <label>Correct Answer</label>
-				<button type="button" ng-click="deleteOption($index)">-</button>
-			</li>
-		</ol>
-		<button type="button" ng-click="addOption()">+</button>
-	</div>
-
-	<br/>
-	<br/>
-  <button id="edit-question-submit" type="submit">Add Question</button>
-</form>
+	</form>
+</div>		
+</div>
