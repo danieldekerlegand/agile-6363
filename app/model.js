@@ -183,16 +183,22 @@ module.exports.getQuestion = function (qid) {
 /*
   Fetch a question's  by course_id  from the database.
 */
-module.exports.getQuestionForCourse = function (co_id) {
+module.exports.getQuestionsForCourse = function (co_id) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
-    let query = 'SELECT * FROM `questions` WHERE `course_id`=(SELECT course_id from course )'
+    let query = 'SELECT * FROM `questions` WHERE `course_id`=?'
     let statement = db.prepare(query, [co_id])
     try {
+      let values = [];
       if (statement.step()) {
-        let values = [statement.get()]
-        let columns = statement.getColumnNames()
-        return _rowsFromSqlDataObject({values: values, columns: columns})
+        let columns = statement.getColumnNames();
+        values.push(statement.get());
+        while (statement.step()) {
+          values.push(statement.get());
+        }
+        console.log(values);
+        console.log(columns);
+        return _rowsFromSqlDataObject({values: values, columns: columns});
       } else {
         console.log('model.getQuestionForCourse', 'No data found for course_id =', co_id)
       }

@@ -39,8 +39,13 @@ nav{
 }
 
 .questionlist-card-container{
-	padding-bottom: 5px;
+	padding-bottom: 4px;
 }
+
+.question-text{
+
+}
+
 /*.navbar-material .nav-wrapper .brand-logo .navbar-fixed img {
     height: 64px !important;
     width: 8em !important;
