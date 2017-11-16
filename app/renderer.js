@@ -1,5 +1,3 @@
-'use strict'
-
 const fs = require('fs')
 const path = require('path')
 const app = require('electron').remote.app
@@ -28,7 +26,7 @@ angularApp.config(function($routeProvider) {
 		})
 		.when('/courses', {
 			templateUrl: 'courses.html',
-			controller: 'CoursesCtrl'	
+			controller: 'CoursesCtrl'
 		})
 		.when('/add-course', {
 			templateUrl: 'add-course.html',
@@ -137,6 +135,5 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams) {
 });
 
 angularApp.controller('EditQuestionCtrl', function($scope) {
-	
-});
 
+});
