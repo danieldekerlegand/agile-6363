@@ -3,29 +3,41 @@
 <div class="main-container">
 <div class="row">
     <h4 class="teal-text text-darken-1">Question Bank</h4>
-    <a href="#!add-question" class="waves-effect waves-light btn">Add Question</a>
+    <a href="#!add-question/{{course_id}}" class="waves-effect waves-light btn">Add Question</a>
 </div>
 
-    <ul>
-        <li ng-repeat="question in questions">
-            <div class = "card-panel questionlist-card-container">
+<div class="row">
+    <ul id="questions-list" >
+        <li ng-repeat="question in questions" class="questionlist-card-container">
+            <div class = "card-panel ">
                 <div class="row">
-                    <span class="left">Q{{question.question_id}}  [1pts] </span><h5 class="truncate blue-grey-text text-darken-3">{{question.question_text}}</h5>
+                    <span class="left">Q-1  [1pts] </span><span class="truncate blue-grey-text text-darken-3">{{question.question_text}}</span>
                     <h6 class="teal-text text-lighten-1">Select question to generate question set, answer set or both</h6>
-
-                    <span><input class="with-gap" name="questiononly" type="radio" id="questiononly" /><label for="questiononly">Question Only</label></span>
-                    <span><input class="with-gap" name="answeronly" type="radio" id="With Solution"/><label for="answeronly">With Solution</label></span>
+                   <form>
+                        <input name="questiononly" type="checkbox" ng-model="questionSet[$index]" ng-true-value="{{value}}" ng-false-value={{undefined}}><label for="questiononly">Question Only</label>
+                    </form>
                 </div>
+        
                 <div class="right">
-                    <a class = "btn-floating waves-effect waves-light teal darken-1" >
-                        <i class = "material-icons">mode_edit</i></a>
+                    <button class = "btn btn-floating waves-effect waves-light teal darken-1  modal-trigger" ng-click="showEditModal(question.question_id)">
+                        <i class = "material-icons">mode_edit</i></button>
                     <a class = "btn-floating waves-effect waves-light teal darken-1" ng-click="deleteQuestion(question.question_id)" >
                         <i class = "material-icons">delete</i></a>
                 </div>
             </div>
-            
+
+            <div id="modal{{question.question_id}}" class="modal">
+                <div class="modal-content">
+                  <input type="text" value="{{question.question_text}}">
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</button>
+                    <button class="modal-action modal-close waves-effect waves-green btn-flat">Done</button>
+                </div>
+            </div>
         </li>
-        
     </ul>
 </div>
+</div>
+
 
