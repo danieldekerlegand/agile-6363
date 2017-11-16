@@ -1,10 +1,11 @@
 <div class="main-container">
 <div class="section">
-	<a href="#!add-question" class="waves-effect waves-light btn">Add Question</a>	
+	<a href="#modal1" class="waves-effect waves-light btn modal-trigger">Add Question</a>	
 	
 </div>
-
+<div id="modal1" class="modal">
 <div class="row">
+	<div class="modal-content">
 	<form id="edit-question-form" ng-submit="submit()">
   		<label for="first_naadd_a_photome">Question Text</label> <input type="text" id="question_text" ng-model="question.text" />
 
@@ -32,8 +33,13 @@
 		</div>
 	<div class="section">
 		<!-- <a class="waves-effect waves-light btn" type="submit">Add Question</a> -->
-		<button class="waves-effect waves-light btn" id="edit-question-submit" type="submit">Add Question</button>
+	<div class="modal-footer">
+		<button class="waves-effect waves-light btn modal-action modal-close" id="edit-question-submit" type="submit">Add Question</button>
+	</div>	
 	</div>
 	</form>
 </div>		
+</div>
+</div>
+
 </div>

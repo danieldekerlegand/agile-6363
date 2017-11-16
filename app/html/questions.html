@@ -7,15 +7,19 @@
 </div>
 
 <div class="row">
-    <ul id="questions-list" >
+<!-- {{questionSet}}
+ -->    <ul id="questions-list" >
         <li ng-repeat="question in questions" class="questionlist-card-container">
             <div class = "card-panel ">
                 <div class="row">
                     <span class="left">Q-1  [1pts] </span><span class="truncate blue-grey-text text-darken-3">{{question.question_text}}</span>
                     <h6 class="teal-text text-lighten-1">Select question to generate question set, answer set or both</h6>
-                   <form>
-                        <input name="questiononly" type="checkbox" ng-model="questionSet[$index]" ng-true-value="{{value}}" ng-false-value={{undefined}}><label for="questiononly">Question Only</label>
-                    </form>
+                        
+                         
+                     <input id="checkFollower" type="checkbox" ng-checked="questionSet[$index]"><label>Select this question <input type="checkbox" ng-model="questionSet[$index]"></label><br/>
+                                        
+                       <!--  <input name="questiononly" type="checkbox" ng-model="questionSet[$index]" ng-true-value="{{value}}" ng-false-value={{undefined}}><label for="questiononly">Question Only</label> -->
+                   
                 </div>
         
                 <div class="right">
