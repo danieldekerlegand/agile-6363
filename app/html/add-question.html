@@ -1,44 +1,61 @@
-<div class="main-container">
-<div class="section">
-	<button class="waves-effect waves-light btn modal-trigger">Add Question</button>
-	
-</div>
-
-<div class="row">
-	
+<div class="main-container">	
 	<form id="edit-question-form" ng-submit="submit()">
-  		<label for="first_naadd_a_photome">Question Text</label> <input type="text" id="question_text" ng-model="question.text" />
+		<div class="card white">
+			<div class="section"></div>
+			<div class="row">
+				<div class="col s12 m12 l12">
+					<div class="input-field">
+						<input type="text" class="validate-focus" textid="question_text" ng-model="question.text">
+						<label for="question_text" class="active" >Question Text</label> 
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 m12 l12">
+					<h6 class="teal-text text-darken-1">Please select your preferred question type:</h6>
+					<div>
+						<input type="radio" id="questionType1" name="type" value="text" ng-model="question.type"> <label for="questionType1">Text Answer</label>
+						<input type="radio" id="questionType2" name="type" value="multiple" ng-model="question.type"> <label for="questionType2">Multiple Choice</label>
+						<div class="section"></div>
+					</div>
+					
+					<div ng-if="showFreeform()" class="input-field">
+						
+						<label for="textarea1">Write a text answer</label>
+						<textarea id="textarea1" class="materialize-textarea" ng-model="option.context"></textarea>
+          			</div>
+						<!-- <textarea placeholder="Add an answer..." name="context" ng-model="option.context"></textarea> -->
+					
+					<div ng-if="showOptions()">
+						<br>
+						<h6 class="blue-grey-text text-darken-3">Add Options for the Questions</h6>
+						<ol>
+							<li ng-repeat="option in options">
+								<input type="text" placeholder="Add an answer option..." name="context" ng-model="options[$index].context" />
+								
+								<input id="checkFollower" type="checkbox" name="isCorrect" ng-checked="options[$index].isCorrect"><label>Correct Answer<input type="checkbox" ng-model="options[$index].isCorrect"></label>
 
-		<h6 class="teal-text text-darken-1">Please select your preferred question type:</h6>
-		
-		<div>
-			<input type="radio" id="questionType1" name="type" value="text" ng-model="question.type"> <label for="questionType1">Text</label>
-			<input type="radio" id="questionType2" name="type" value="multiple" ng-model="question.type"> <label for="questionType2">Multiple Choice</label>
+								<!-- <input type="checkbox" name="isCorrect" ng-model="options[$index].isCorrect" value="1" /> <label>Correct Answer</label> -->
+								
+								<a class="btn-floating waves-effect waves-light teal darken-1 right" type="button" ng-click="deleteOption($index)"><i class="material-icons">delete</i></a>
+							
+							</li>
+						</ol>
+						<a class="btn-floating waves-effect waves-light teal darken-1" type="button" ng-click="addOption()"><i class="material-icons">add</i></a>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 m12 l12">
+					<div class="section"></div>
+				<!-- <a class="waves-effect waves-light btn" type="submit">Add Question</a> -->
+					<button class="waves-effect waves-light btn" id="edit-question-submit" onclick="Materialize.toast('Question Added to the Question Bank', 4000)" type="submit">Add Question</button>
+					<div class="section"></div>
+				</div>
+			</div>
 		</div>
-
-		<div ng-if="showFreeform()">
-			<textarea placeholder="Add an answer..." name="context" ng-model="option.context"></textarea>
-		</div>
-
-		<div ng-if="showOptions()">
-			<h5>Options</h5>
-			<ol>
-				<li ng-repeat="option in options">
-					<input type="text" placeholder="Add an answer option..." name="context" ng-model="options[$index].context" />
-					<input type="checkbox" name="isCorrect" ng-model="options[$index].isCorrect" value="1" /> <label>Correct Answer</label>
-					<button type="button" ng-click="deleteOption($index)">-</button>
-				</li>
-			</ol>
-			<button type="button" ng-click="addOption()">+</button>
-		</div>
-	<div class="section">
-		<!-- <a class="waves-effect waves-light btn" type="submit">Add Question</a> -->
-	<div class="modal-footer">
-		<button class="waves-effect waves-light btn modal-action modal-close" id="edit-question-submit" type="submit">Add Question</button>
-	</div>	
-	</div>
 	</form>
-		
 </div>
-</div>
+
+
 
