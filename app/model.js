@@ -196,8 +196,8 @@ module.exports.getQuestionsForCourse = function (co_id) {
         while (statement.step()) {
           values.push(statement.get());
         }
-        console.log(values);
-        console.log(columns);
+        // console.log(values);
+        // console.log(columns);
         return _rowsFromSqlDataObject({values: values, columns: columns});
       } else {
         console.log('model.getQuestionForCourse', 'No data found for course_id =', co_id)
@@ -470,6 +470,34 @@ module.exports.getQuestionSet = function (qs_id) {
 }
 
 /*
+  Get all question sets for a course.
+*/
+module.exports.getQuestionSetsForCourse = function (c_id) {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'SELECT * FROM `question_sets` WHERE `course_id` IS ?'
+    let statement = db.prepare(query, [c_id])
+    try {
+			let values = [];
+      if (statement.step()) {
+        let columns = statement.getColumnNames();
+        values.push(statement.get());
+        while (statement.step()) {
+          values.push(statement.get());
+        }
+        // console.log(values);
+        // console.log(columns);
+        return _rowsFromSqlDataObject({values: values, columns: columns});
+      }
+    } catch (error) {
+      console.log('model.getQuestionSetsForCourse', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*
   Populates the question set items list for a question set
 */
 module.exports.getQuestionSetItems = function (qs_id) {
@@ -485,8 +513,8 @@ module.exports.getQuestionSetItems = function (qs_id) {
         while (statement.step()) {
           values.push(statement.get());
         }
-        console.log(values);
-        console.log(columns);
+        // console.log(values);
+        // console.log(columns);
         return _rowsFromSqlDataObject({values: values, columns: columns});
       }
     } catch (error) {
