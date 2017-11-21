@@ -107,6 +107,7 @@ angularApp.controller('AddCourseCtrl', function($scope, $location) {
 angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 	$scope.questions = model.getQuestionsForCourse($routeParams.course_id);
 	$scope.course_id = $routeParams.course_id;
+	$scope.course = model.getCourse($routeParams.course_id)[0];
 	$scope.questionSet = [];
 	$scope.showEditModal = function(qid) {
 		$('#modal' + qid).modal();
@@ -148,19 +149,6 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 
 });
 
-angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
-	$scope.questions = model.getQuestionsForCourse($routeParams.course_id);
-	$scope.course_id = $routeParams.course_id;
-	$scope.questionSet = [];
-	$scope.showEditModal = function(qid) {
-		$('#modal' + qid).modal();
-		$('#modal' + qid).modal('open');
-	}
-	$scope.deleteQuestion = function(qid) {
-		model.deleteQuestion(qid);
-		$scope.questions = model.getQuestionsForCourse($routeParams.course_id);
-	}
-});
 
 
 /*angularApp.controller('QuestionSetsCtrl', function($scope, $routeParams) {

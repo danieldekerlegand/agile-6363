@@ -2,11 +2,9 @@
 <!-- Creating the cards of questions -->
 <div class="main-container">
 <div class="row">
-    <div ng-controller="CoursesCtrl">
-    <div ng-repeat="course in courses">
-    <h4 class="teal-text text-darken-1">Question Bank of <span  ng-model="courses[$index]">{{course.course_name}}</span></h4>
-    </div>
-    </div>
+    
+    <h4 class="teal-text text-darken-1">Question Bank of {{course.course_name}}</span></h4>
+    
     <a href="#!add-question/{{course_id}}" class="waves-effect waves-light btn">Create Question</a>
     <a class="waves-effect waves-light btn disabled right" ng-disabled="questionSet[$index]">Generate Question Set</a>
     
