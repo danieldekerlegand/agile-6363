@@ -163,7 +163,8 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 });
 
 
-angularApp.controller('QuestionSetsCtrl', function($scope, $routeParams) {
+/*angularApp.controller('QuestionSetsCtrl', function($scope, $routeParams) {
 	$scope.questionSets = model.getQuestionSetsForCourse($routeParams.course_id);
 });
 
+*/
