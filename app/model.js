@@ -375,6 +375,7 @@ module.exports.getCourse = function (co_id) {
     }
   }
 }
+
 /*
   Delete a course's data from the database.
 */
@@ -393,6 +394,103 @@ module.exports.deleteCourse = function (co_id, callback) {
       }
     } catch (error) {
       console.log('model.deleteCourse', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*
+  Delete a question set from the database.
+*/
+module.exports.deleteQuestionSet = function (co_id, callback) {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'DELETE FROM `question_sets` WHERE `question_set_id` IS ?'
+    let statement = db.prepare(query)
+    try {
+      if (statement.run([co_id])) {
+        if (typeof callback === 'function') {
+          callback();
+        }
+      } else {
+        console.log('model.deleteCourse', 'No data found for course_id =', co_id)
+      }
+    } catch (error) {
+      console.log('model.deleteCourse', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*
+  Populates the question sets list
+*/
+module.exports.getQuestionSets = function () {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'SELECT * FROM `question_sets` ORDER BY `question_set_id` ASC'
+    try {
+      let row = db.exec(query)
+      if (row !== undefined && row.length > 0) {
+        row = _rowsFromSqlDataObject(row[0])
+				return row
+      }
+    } catch (error) {
+      console.log('model.getQuestionSets', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*
+  Fetch a question set's data from the database.
+*/
+module.exports.getQuestionSet = function (qs_id) {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'SELECT * FROM `question_sets` WHERE `question_set_id` IS ?'
+    let statement = db.prepare(query, [qs_id])
+    try {
+      if (statement.step()) {
+        let values = [statement.get()]
+        let columns = statement.getColumnNames()
+        return _rowsFromSqlDataObject({values: values, columns: columns})
+      } else {
+        console.log('model.getQuestionSet', 'No data found for question_set_id =', qid)
+      }
+    } catch (error) {
+      console.log('model.getQuestionSet', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*
+  Populates the question set items list for a question set
+*/
+module.exports.getQuestionSetItems = function (qs_id) {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'SELECT * FROM `question_set_items` WHERE `question_set_id` IS ?'
+		let statement = db.prepare(query, [qs_id])
+    try {
+			let values = [];
+      if (statement.step()) {
+        let columns = statement.getColumnNames();
+        values.push(statement.get());
+        while (statement.step()) {
+          values.push(statement.get());
+        }
+        console.log(values);
+        console.log(columns);
+        return _rowsFromSqlDataObject({values: values, columns: columns});
+      }
+    } catch (error) {
+      console.log('model.getQuestionSetItems', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
