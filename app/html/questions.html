@@ -6,13 +6,13 @@
     <h4 class="teal-text text-darken-1">Question Bank of {{course.course_name}}</span></h4>
     
     <a href="#!add-question/{{course_id}}" class="waves-effect waves-light btn">Create Question</a>
-    <a class="waves-effect waves-light btn disabled right" ng-disabled="questionSet[$index]">Generate Question Set</a>
+    <a class="waves-effect waves-light btn right" ng-disabled="questionSetArr.length === 0" ng-click="generateQuestionSet()" >
+    Generate Question Set</a> 
     
 </div>
 
 <div class="row">
-<!-- {{questionSet}}
- -->    <ul id="questions-list" >
+    <ul id="questions-list" >
         <li ng-repeat="question in questions" class="questionlist-card-container">
             <div class = "card-panel ">
                 <div class="row">
@@ -20,9 +20,10 @@
                    
                         
                          
-                     <input id="checkFollower" type="checkbox" ng-checked="questionSet[$index]"><label class="teal-text text-lighten-1">Select question to generate question set<input type="checkbox" ng-model="questionSet[$index]"></label><br/>
+                     <input id="checkFollower" type="checkbox" ng-checked="questionSetArr.indexOf(question.question_id) > -1"><label class="teal-text text-lighten-1">Select question to generate question set<input type="checkbox" ng-click="toggleSelection(question.question_id)"></label><br/>
                                         
                        <!--  <input name="questiononly" type="checkbox" ng-model="questionSet[$index]" ng-true-value="{{value}}" ng-false-value={{undefined}}><label for="questiononly">Question Only</label> -->
+                 
                    
                 </div>
         
