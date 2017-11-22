@@ -18,6 +18,20 @@ angularApp.factory('courses', function() {
   };
 });
 
+angularApp.directive('customOnChange', function() {
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      var onChangeHandler = scope.$eval(attrs.customOnChange);
+      element.on('change', onChangeHandler);
+      element.on('$destroy', function() {
+        element.off();
+      });
+
+    }
+  };
+});
+
 angularApp.config(function($routeProvider) {
   $routeProvider
 		.when('/', {
@@ -108,6 +122,7 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 angularApp.controller('AddQuestionCtrl', function($scope, $routeParams) {
 	$scope.question = {};
 	$scope.options = [{context: "", isCorrect: 0, question_id: null}];
+	$scope.images = [];
 	$scope.submit = function() {
 		let formData = {columns: ['question_text', 'question_type', 'course_id'], values: [$scope.question.text, $scope.question.type, $routeParams.course_id]};
 		model.saveFormData('questions', formData, function(questionId) {
@@ -131,7 +146,17 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams) {
 	$scope.showOptions = function() {
 		return $scope.question.type === 'multiple';
 	};
-
+	$scope.showImagePicker = function() {
+		return $scope.question.type === 'image';
+	}
+	$scope.imagesSelected = function() {
+		return $scope.images.length > 0;
+	};
+	$scope.uploadFile = function(event){
+		$scope.$apply(function(){
+			$scope.images = Array.from(event.target.files);
+		});
+	};
 });
 
 angularApp.controller('EditQuestionCtrl', function($scope) {

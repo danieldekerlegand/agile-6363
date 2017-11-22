@@ -15,3 +15,14 @@ CREATE TABLE "options" (
   "question_id" INTEGER NOT NULL,
   "is_correct" INTEGER NOT NULL
 );
+
+CREATE TABLE "question_sets" (
+	"question_set_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"course_id" INTEGER NOT NULL
+);
+
+CREATE TABLE "question_set_items" (
+	"question_set_item_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	"question_set_id" INTEGER NOT NULL,
+	"question_id" INTEGER NOT NULL
+);
