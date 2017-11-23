@@ -53,6 +53,13 @@ SQL.dbClose = function (databaseHandle, databaseFileName) {
   }
 }
 
+module.exports.wipeDatabase = function(appPath, callback) {
+	let dbPath = path.join(appPath, 'example.db')
+	fs.unlink(dbPath, function() {
+		callback();
+	});
+}
+
 /*
   A function to create a new SQLite3 database from schema.sql.
 
@@ -216,6 +223,7 @@ module.exports.getQuestionsForCourse = function (co_id) {
 module.exports.deleteQuestion = function (qid, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `questions` WHERE `question_id` IS ?'
     let statement = db.prepare(query)
     try {
@@ -311,6 +319,7 @@ module.exports.getOption = function (oid) {
 module.exports.deleteOption = function (oid, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `options` WHERE `option_id` IS ?'
     let statement = db.prepare(query)
     try {
@@ -382,6 +391,7 @@ module.exports.getCourse = function (co_id) {
 module.exports.deleteCourse = function (co_id, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `courses` WHERE `course_id` IS ?'
     let statement = db.prepare(query)
     try {
@@ -406,6 +416,7 @@ module.exports.deleteCourse = function (co_id, callback) {
 module.exports.deleteQuestionSet = function (qs_id, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `question_sets` WHERE `question_set_id` IS ?'
     let statement = db.prepare(query)
     try {

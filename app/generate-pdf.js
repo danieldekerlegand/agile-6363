@@ -7,9 +7,9 @@ module.exports.exportPdf = function(questions) {
 	console.log('generating pdf with questions', questions);
 
 	let text = ''
-	for (question in questions) {
+	for (var question in questions) {
 		text += parseInt(question)+1 + ") " + questions[question].question_text + "\n\n";
-	};
+	}
 
 	doc.text(text)
 
