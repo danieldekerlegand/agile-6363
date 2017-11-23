@@ -7,6 +7,7 @@ CREATE TABLE questions (
 	question_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	question_text TEXT(255,0) NOT NULL,
   question_type TEXT(255,0) NOT NULL,
+	question_point INTEGER NOT NULL,
   course_id INTEGER REFERENCES courses(course_id) ON DELETE CASCADE
 );
 CREATE TABLE options (
@@ -18,6 +19,7 @@ CREATE TABLE options (
 
 CREATE TABLE question_sets (
 	question_set_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	question_set_name TEXT(255,0) NOT NULL,
 	course_id INTEGER REFERENCES courses(course_id) ON DELETE CASCADE
 );
 
