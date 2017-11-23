@@ -7,7 +7,7 @@
 				<div class="col s12 m12 l12">
 					<div class="input-field">
 						<input type="text" class="validate-focus" textid="question_text" ng-model="question.text">
-						<label for="question_text" class="active" >Question Text</label> 
+						<label for="question_text" class="active">Question Text</label> 
 					</div>
 				</div>
 			</div>
@@ -17,9 +17,18 @@
 					<div>
 						<input type="radio" id="questionType1" name="type" value="text" ng-model="question.type"> <label for="questionType1">Text Answer</label>
 						<input type="radio" id="questionType2" name="type" value="multiple" ng-model="question.type"> <label for="questionType2">Multiple Choice</label>
-						<div class="section"></div>
+						
 					</div>
-					
+					<div class="row">
+				        <div class="col s12 m12 l12">
+				          Add points to the question:
+				          <div class="input-field inline">
+				           <input type="text" name="point" ng-model="question.point">
+				            <label for="questionType2">Point</label>
+				          </div>
+				        </div>
+				    </div>
+
 					<div ng-if="showFreeform()" class="input-field">
 						
 						<label for="textarea1">Write a text answer</label>
@@ -49,7 +58,6 @@
 			</div>
 			<div class="row">
 				<div class="col s12 m12 l12">
-					<div class="section"></div>
 				<!-- <a class="waves-effect waves-light btn" type="submit">Add Question</a> -->
 					<button class="waves-effect waves-light btn" onclick="Materialize.toast('Question Added to the Question Bank', 4000)" type="submit">Add Question</button>
 					<div class="section"></div>

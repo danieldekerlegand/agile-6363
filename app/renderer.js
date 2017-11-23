@@ -68,10 +68,14 @@ angularApp.config(function($routeProvider) {
 			templateUrl: 'question-sets.html',
 			controller: 'QuestionSetsCtrl'
 		})
-		.when('/add-question-set', {
-			templateUrl: 'add-question-set.html',
-			controller: 'AddQuestionSetCtrl'
+		.when('/question-sets/:course_id', {
+			templateUrl: 'question-sets-for-course.html',
+			controller: 'QuestionSetsForCourseCtrl'
 		})
+		/*.when('/add-question-set', {
+			templateUrl: 'add-question-set.html',
+			controller: 'AddQuestionSet'
+		})*/
 })
 
 angularApp.controller('MainCtrl', ['$window', '$route', '$routeParams', '$location',
@@ -103,7 +107,7 @@ angularApp.controller('CoursesCtrl', function($scope, courses, $location) {
 	$scope.deleteCourse = function(cid) {
 		model.deleteCourse(cid);
 		$scope.courses = model.getCourses();
-		if (!model.getPathtCourses()) {
+		if (!model.getCourses()) {
 			$location.path('/');
 		}
 	};
@@ -122,6 +126,7 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 	$scope.questions = model.getQuestionsForCourse($routeParams.course_id);
 	$scope.course_id = $routeParams.course_id;
 	$scope.course = model.getCourse($routeParams.course_id)[0];
+	$scope.questionSetName = "";
 
 	let questionSet = new Set();
 	$scope.questionSetArr = [];
@@ -136,8 +141,13 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 		$scope.questionSetArr = Array.from(questionSet);
 	}
 
+	$scope.openQuestionSetNameModal = function() {
+		$('#questionSetName').modal();
+		$('#questionSetName').modal('open');
+	}
+
 	$scope.generateQuestionSet = function(){
-		let formData = {columns: ['course_id'], values: [$routeParams.course_id]};
+		let formData = {columns: ['course_id', 'question_set_name'], values: [$routeParams.course_id, $scope.questionSetName]};
 		model.saveFormData('question_sets', formData, function(questionSetId) {
 			$scope.questionSetArr.forEach(function(questionId) {
 				let questionFormData = {columns: ['question_set_id', 'question_id'], values: [questionSetId, questionId]};
@@ -145,7 +155,6 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 			});
 		});
 	}
-
 
 	$scope.showEditModal = function(qid) {
 		$('#modal' + qid).modal();
@@ -162,7 +171,7 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 	$scope.options = [{context: "", isCorrect: 0, question_id: null}];
 	$scope.images = [];
 	$scope.submit = function() {
-		let formData = {columns: ['question_text', 'question_type', 'course_id'], values: [$scope.question.text, $scope.question.type, $routeParams.course_id]};
+		let formData = {columns: ['question_text', 'question_type', 'question_point', 'course_id'], values: [$scope.question.text, $scope.question.type, $scope.question.point, $routeParams.course_id]};
 		model.saveFormData('questions', formData, function(questionId) {
 			$scope.options.forEach(function(option) {
 				let optionFormData = {columns: ['context', 'question_id', 'is_correct'], values: [option.context, questionId, option.isCorrect]};
@@ -199,15 +208,49 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 });
 
 
-
-
-angularApp.controller('QuestionSetsCtrl', function($scope, $routeParams) {
+angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 	$scope.questionSets = model.getQuestionSets();
+	$scope.courses = model.getCourses();
+	
+	$scope.getCourse = function(course_id){
+		return model.getCourse(course_id)[0];
+	}
+	 
+	$scope.openAddQuestionSetModal = function() {
+		
+		$('#AddquestionSet').modal();
+		$('#AddquestionSet').modal('open');
+	}
+	$scope.goToQuestionBank = function(course_id) {
+
+		$('#AddquestionSet').modal('close');
+		$location.path('/questions/' + course_id);
+	}
+
+	$scope.deleteQuestionSet = function(qset_id) {
+		model.deleteQuestionSet(qset_id);
+		$scope.questionSets = model.getQuestionSets();
+		if(!model.getQuestionSets()){
+			$location.path('/add-question-set')
+		}
+	}
+	
 });
 
+angularApp.controller('QuestionSetsForCourseCtrl', function($scope, $routeParams) {
+	$scope.questionSetsForCourse = model.getQuestionSetsForCourse($routeParams.course_id);
+	$scope.course = model.getCourse($routeParams.course_id)[0]; 
+	
 
-
-angularApp.controller('EditQuestionCtrl', function($scope) {
+	$scope.deleteQuestionSet = function(qset_id) {
+		model.deleteQuestionSet(qset_id);
+		$scope.questionSetsForCourse = model.getQuestionSetsForCourse($routeParams.course_id);
+	}
 
 });
 
+/*angularApp.controller('AddQuestionSetCtrl', function($scope, $routeParams) {
+	$scope.questionSetsForCourse = model.getQuestionSetsForCourse($routeParams.course_id);
+	$scope.course = model.getCourse($routeParams.course_id)[0];
+});
+*/

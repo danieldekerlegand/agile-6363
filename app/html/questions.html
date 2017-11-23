@@ -1,14 +1,27 @@
-<!-- <span ng-bind="course_name"><h3 class="teal-text text-darken-1 text-style">{{courses.course + "QB"}}  </h3></span> -->
-<!-- Creating the cards of questions -->
 <div class="main-container">
-<div class="row">
-    
-    <h4 class="teal-text text-darken-1">Question Bank of {{course.course_name}}</span></h4>
-    
-    <a href="#!add-question/{{course_id}}" class="waves-effect waves-light btn">Create Question</a>
-    <a class="waves-effect waves-light btn right" ng-disabled="questionSetArr.length === 0" ng-click="generateQuestionSet()" >
-    Generate Question Set</a> 
-    
+    <div class="row">
+        
+        <h4 class="teal-text text-darken-1 center-align">Question Bank of {{course.course_name}}</h4>
+        
+        <a href="#!add-question/{{course_id}}" class="waves-effect waves-light btn">Create Question</a>
+        <a class="waves-effect waves-light btn right modal-trigger" ng-disabled="questionSetArr.length === 0" ng-click="openQuestionSetNameModal()">
+        Generate Question Set</a> 
+    </div>
+<div id="questionSetName" class="modal">
+                <div class="row">
+                <div class="col s12 m12 l12"">
+                <div class="modal-content">
+                  <div class="input-field">
+                  <input type="text" ng-model="questionSetName"><label>Question Set Name</label>
+                  </div>  
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</button>
+                    <button class="modal-action modal-close waves-effect waves-green btn-flat" ng-click="generateQuestionSet()">Done</button>
+                </div>
+            </div>
+            </div>
+
 </div>
 
 <div class="row">
@@ -16,7 +29,7 @@
         <li ng-repeat="question in questions" class="questionlist-card-container">
             <div class = "card-panel ">
                 <div class="row">
-                    <span class="left">Q-{{question.question_id}}  [1pts] </span><span class="truncate blue-grey-text text-darken-3">{{question.question_text}}</span>
+                    <span class="left">Q-{{$index + 1}} [{{question.question_point}}Pts] </span><span class="truncate blue-grey-text text-darken-3">{{question.question_text}}</span>
                    
                         
                          
@@ -48,6 +61,7 @@
     </ul>
 </div>
 </div>
+
 
 
 
