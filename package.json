@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "mocha tests/test.js"
+    "test": "mocha tests/*.js"
   },
   "repository": "https://github.com/danieldekerlegand/agile-6363",
   "keywords": [
