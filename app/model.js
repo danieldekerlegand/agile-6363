@@ -263,13 +263,19 @@ module.exports.getOptions = function () {
 module.exports.getOptionsForQuestion = function (qid) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
-    let query = 'SELECT * FROM `options` WHERE `question_id`=(SELECT question_id from questions)'
+    let query = 'SELECT * FROM `options` WHERE `question_id` IS ?'
     let statement = db.prepare(query, [qid])
     try {
+      let values = [];
       if (statement.step()) {
-        let values = [statement.get()]
-        let columns = statement.getColumnNames()
-        return _rowsFromSqlDataObject({values: values, columns: columns})
+        let columns = statement.getColumnNames();
+        values.push(statement.get());
+        while (statement.step()) {
+          values.push(statement.get());
+        }
+        // console.log(values);
+        // console.log(columns);
+        return _rowsFromSqlDataObject({values: values, columns: columns});
       } else {
         console.log('model.getOptionsForQuestion', 'No data found for question_id =', qid)
       }
