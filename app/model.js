@@ -4,8 +4,6 @@ const path = require('path')
 const fs = require('fs')
 const SQL = require('sql.js')
 
-console.log('window', window)
-
 let _rowsFromSqlDataObject = function (object) {
   let data = {}
   let i = 0

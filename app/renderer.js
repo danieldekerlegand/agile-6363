@@ -4,7 +4,7 @@ const app = require('electron').remote.app
 
 let webRoot = path.dirname(__dirname)
 window.model = require(path.join(webRoot, 'model.js'))
-dbPath = path.join(app.getPath('userData'), 'example.db')
+window.model.db = path.join(app.getPath('userData'), 'example.db')
 window.angular = require('angular')
 window.Hammer = require('hammerjs')
 
@@ -209,13 +209,13 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 	$scope.questionSets = model.getQuestionSets();
 	$scope.courses = model.getCourses();
-	
+
 	$scope.getCourse = function(course_id){
 		return model.getCourse(course_id)[0];
 	}
-	 
+
 	$scope.openAddQuestionSetModal = function() {
-		
+
 		$('#AddquestionSet').modal();
 		$('#AddquestionSet').modal('open');
 	}
@@ -232,13 +232,13 @@ angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 			$location.path('/add-question-set')
 		}
 	}
-	
+
 });
 
 angularApp.controller('QuestionSetsForCourseCtrl', function($scope, $routeParams) {
 	$scope.questionSetsForCourse = model.getQuestionSetsForCourse($routeParams.course_id);
-	$scope.course = model.getCourse($routeParams.course_id)[0]; 
-	
+	$scope.course = model.getCourse($routeParams.course_id)[0];
+
 
 	$scope.deleteQuestionSet = function(qset_id) {
 		model.deleteQuestionSet(qset_id);
