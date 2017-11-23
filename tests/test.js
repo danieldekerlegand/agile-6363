@@ -8,19 +8,19 @@ let model = require(path.join(webRoot, 'app', 'model.js'))
 
 describe('Models', function() {
 
-	before(function() {
-		// runs before all tests in this block
-		// model.wipeDatabase(app.getPath('userData'), function() {
-			model.initDb(app.getPath('userData'));
-		// });
-	});
-
-	describe('Questions', function() {
-		describe('getQuestions()', function() {
-			it('should return all questions', function() {
-				console.log("model", model.getQuestions());
-			})
-		})
-	})
+	// before(function() {
+	// 	// runs before all tests in this block
+	// 	// model.wipeDatabase(app.getPath('userData'), function() {
+	// 		model.initDb(app.getPath('userData'));
+	// 	// });
+	// });
+  //
+	// describe('Questions', function() {
+	// 	describe('getQuestions()', function() {
+	// 		it('should return all questions', function() {
+	// 			console.log("model", model.getQuestions());
+	// 		})
+	// 	})
+	// })
 
 })
