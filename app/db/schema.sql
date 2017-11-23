@@ -6,12 +6,14 @@ CREATE TABLE "courses" (
 CREATE TABLE "questions" (
 	"question_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"question_text" TEXT(255,0) NOT NULL,
+	"image_path" TEXT(255,0),
   "question_type" TEXT(255,0) NOT NULL,
   "course_id" INTEGER NOT NULL
 );
 CREATE TABLE "options" (
 	"option_id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	"context" TEXT(255,0) NOT NULL,
+	"image_path" TEXT(255,0),
   "question_id" INTEGER NOT NULL,
   "is_correct" INTEGER NOT NULL
 );

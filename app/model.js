@@ -3,6 +3,8 @@
 const path = require('path')
 const fs = require('fs')
 const SQL = require('sql.js')
+var dir = './tmp';
+
 
 let _rowsFromSqlDataObject = function (object) {
   let data = {}
@@ -397,4 +399,25 @@ module.exports.deleteCourse = function (co_id, callback) {
       SQL.dbClose(db, window.model.db)
     }
   }
+}
+
+module.exports.copyImage = function (imagePath) {
+  var dir = path.join(app.getPath('userData'), 'images')
+  //var d = new Date();
+  //var name = './duaa.jpg';
+  var name1 = new Date().getTime() + '.jpg';
+
+  console.log(imagePath);
+  
+  var readStream=fs.createReadStream(imagePath);
+  var writeStream=fs.createWriteStream(dir + '/'+ name1);
+  
+    if (!fs.existsSync(dir)){
+      //create nre directory with name dir
+        fs.mkdirSync(dir);
+    }
+    readStream.pipe(writeStream);
+    return name1;
+   // console.log(name1);
+  //  fs.createReadStream('.\node\crit.jpg').pipe(fs.createWriteStream('./images/+new Date().getTime()+.png'));
 }
