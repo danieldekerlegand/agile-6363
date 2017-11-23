@@ -4,8 +4,7 @@
   "description": "An application for creating question banks that can be used to generate quizzes.",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "test": "mocha tests/*.js"
+    "start": "electron ."
   },
   "repository": "https://github.com/danieldekerlegand/agile-6363",
   "keywords": [
