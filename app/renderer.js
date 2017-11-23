@@ -4,7 +4,7 @@ const app = require('electron').remote.app
 
 let webRoot = path.dirname(__dirname)
 window.model = require(path.join(webRoot, 'model.js'))
-window.model.db = path.join(app.getPath('userData'), 'example.db')
+dbPath = path.join(app.getPath('userData'), 'example.db')
 window.angular = require('angular')
 window.Hammer = require('hammerjs')
 

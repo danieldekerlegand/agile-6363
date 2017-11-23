@@ -4,6 +4,8 @@ const path = require('path')
 const fs = require('fs')
 const SQL = require('sql.js')
 
+console.log('window', window)
+
 let _rowsFromSqlDataObject = function (object) {
   let data = {}
   let i = 0
@@ -223,6 +225,7 @@ module.exports.getQuestionsForCourse = function (co_id) {
 module.exports.deleteQuestion = function (qid, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `questions` WHERE `question_id` IS ?'
     let statement = db.prepare(query)
     try {
@@ -318,6 +321,7 @@ module.exports.getOption = function (oid) {
 module.exports.deleteOption = function (oid, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `options` WHERE `option_id` IS ?'
     let statement = db.prepare(query)
     try {
@@ -389,6 +393,7 @@ module.exports.getCourse = function (co_id) {
 module.exports.deleteCourse = function (co_id, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `courses` WHERE `course_id` IS ?'
     let statement = db.prepare(query)
     try {
@@ -413,6 +418,7 @@ module.exports.deleteCourse = function (co_id, callback) {
 module.exports.deleteQuestionSet = function (co_id, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `question_sets` WHERE `question_set_id` IS ?'
     let statement = db.prepare(query)
     try {
