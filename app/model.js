@@ -1,5 +1,3 @@
-'use strict'
-
 const path = require('path')
 const fs = require('fs')
 const SQL = require('sql.js')
@@ -53,7 +51,7 @@ SQL.dbClose = function (databaseHandle, databaseFileName) {
   }
 }
 
-module.exports.wipeDatabase = function(appPath, callback) {
+module.exports.wipeDb = function(appPath, callback) {
 	let dbPath = path.join(appPath, 'example.db')
 	fs.unlink(dbPath, function() {
 		callback();
@@ -120,7 +118,7 @@ module.exports.saveFormData = function (tableName, keyValue, callback) {
 			let statement = db.prepare(query)
       try {
         if (statement.run(keyValue.values)) {
-					console.log('model.saveFormData', 'Query succeeded for', keyValue.values)
+					// console.log('model.saveFormData', 'Query succeeded for', keyValue.values)
         } else {
           console.log('model.saveFormData', 'Query failed for', keyValue.values)
         }
