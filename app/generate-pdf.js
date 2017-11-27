@@ -9,26 +9,35 @@ module.exports.exportPdf = function(questions, question_set_name, showAnswers) {
 		if (fileName === undefined) return;
 		doc = new PDFDocument();
 		doc.pipe(fs.createWriteStream(fileName));
-		console.log('generating pdf with questions', questions);
-		console.log(showAnswers);
+
 		let text = ''
 		questions.forEach(function(question, qIndex) {
-
-			text += qIndex+1 + ") " + question.question_text + "\n\n";
+			text += `Q-${qIndex+1} [${question.question_point} pts] ${question.question_text}\n\n`;
 			question.options.forEach(function(option, oIndex) {
 				if (question.question_type === "text") {
 					if (showAnswers) {
-						text += oIndex+1 + ") " + option.context + "\n\n";
+						text += `Answer:\n${option.context}`;
 					} else {
-						text += "\n\n\n\n";
+						text += "\n\n\n\n\n\n";
 					}
 				} else if (question.question_type === "multiple") {
-					text += oIndex+1 + ") " + option.context + "\n\n";
-					if (showAnswers && option.is_correct) {
-						text += "Is Correct";
-					}
+					text += `${String.fromCharCode(97 + oIndex)}) ${option.context} \n`;
 				}
 			});
+
+			if (showAnswers && question.question_type === "multiple") {
+				text += "\nAnswer: \n";
+				question.options.forEach(function(option, oIndex) {
+					if (option.is_correct) {
+						if (oIndex === question.options.length - 2) {
+							text += `${String.fromCharCode(97 + oIndex)}) and `;
+						} else {
+							text += `${String.fromCharCode(97 + oIndex)})  `;
+						}
+					}
+				});
+			}
+			text += "\n\n"
 		});
 
 		doc.text(text)
