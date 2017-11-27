@@ -1,12 +1,14 @@
 const fs = require('fs')
 const path = require('path')
 const app = require('electron').remote.app
+const log = require('loglevel')
 
 let webRoot = path.dirname(__dirname)
 window.model = require(path.join(webRoot, 'model.js'))
 window.model.db = path.join(app.getPath('userData'), 'example.db')
 window.angular = require('angular')
 window.Hammer = require('hammerjs')
+
 
 const pdf = require(path.join(webRoot, 'generate-pdf.js'))
 
@@ -94,7 +96,6 @@ angularApp.controller('NavCtrl', function($scope, courses) {
 
 angularApp.controller('LandingCtrl', function($scope, courses) {
 	$scope.coursesExist = function() {
-		console.log('landing control', courses.exist());
 		return courses.exist();
 	}
 });
@@ -265,7 +266,6 @@ angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 		let dataForPDF = [];
 		let questionSetItems = model.getQuestionSetItems($scope.questionSetForModal.question_set_id);
 		for (var qsi in questionSetItems){
-			console.log('qsi', qsi)
 			let question = model.getQuestion(questionSetItems[qsi].question_id)[0];
 			let options = model.getOptionsForQuestion(question.question_id);
 			question.options = [];
@@ -275,7 +275,6 @@ angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 
 			dataForPDF.push(question);
 		}
-		console.log(dataForPDF);
 		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers); 
 	}
 });
@@ -303,7 +302,6 @@ angularApp.controller('QuestionSetsForCourseCtrl', function($scope, $routeParams
 		let dataForPDF = [];
 		let questionSetItems = model.getQuestionSetItems($scope.questionSetForModal.question_set_id);
 		for (var qsi in questionSetItems){
-			console.log('qsi', qsi)
 			let question = model.getQuestion(questionSetItems[qsi].question_id)[0];
 			let options = model.getOptionsForQuestion(question.question_id);
 			question.options = [];
@@ -313,7 +311,6 @@ angularApp.controller('QuestionSetsForCourseCtrl', function($scope, $routeParams
 
 			dataForPDF.push(question);
 		}
-		console.log(dataForPDF);
 		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers); 
 	}
 
