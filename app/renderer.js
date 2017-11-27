@@ -8,6 +8,8 @@ window.model.db = path.join(app.getPath('userData'), 'example.db')
 window.angular = require('angular')
 window.Hammer = require('hammerjs')
 
+const pdf = require(path.join(webRoot, 'generate-pdf.js'))
+
 var angularApp = angular.module("questionBank", [require('angular-route')])
 
 angularApp.factory('courses', function() {
@@ -70,10 +72,10 @@ angularApp.config(function($routeProvider) {
 			templateUrl: 'question-sets-for-course.html',
 			controller: 'QuestionSetsForCourseCtrl'
 		})
-		/*.when('/add-question-set', {
-			templateUrl: 'add-question-set.html',
-			controller: 'AddQuestionSet'
-		})*/
+		.when('/view-questions-for-question-set/:question_set_id', {
+			templateUrl: 'view-questions-for-question-set.html',
+			controller: 'ViewQuestionsForQuestionSetCtrl'
+		})
 })
 
 angularApp.controller('MainCtrl', ['$window', '$route', '$routeParams', '$location',
@@ -126,6 +128,10 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 	$scope.course = model.getCourse($routeParams.course_id)[0];
 	$scope.questionSetName = "";
 
+	$scope.getOptionForQuestion = function(qid){
+		return model.getOptionsForQuestion(qid);
+	}
+
 	let questionSet = new Set();
 	$scope.questionSetArr = [];
 
@@ -135,7 +141,6 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 		} else {
 			questionSet.add(qid);
 		}
-		console.log('test1', questionSet)
 		$scope.questionSetArr = Array.from(questionSet);
 	}
 
@@ -168,18 +173,32 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 	$scope.question = {};
 	$scope.options = [{context: "", isCorrect: 0, question_id: null}];
 	$scope.images = [];
+	$scope.textOption = {context: ""};
 	$scope.submit = function() {
 		let formData = {columns: ['question_text', 'question_type', 'question_point', 'course_id'], values: [$scope.question.text, $scope.question.type, $scope.question.point, $routeParams.course_id]};
 		model.saveFormData('questions', formData, function(questionId) {
-			$scope.options.forEach(function(option) {
-				let optionFormData = {columns: ['context', 'question_id', 'is_correct'], values: [option.context, questionId, option.isCorrect]};
+			if ($scope.question.type === "text"){
+				let optionFormData = {columns: ['context', 'question_id', 'is_correct'], values: [$scope.textOption.context, questionId, true]};
 				model.saveFormData('options', optionFormData);
-			});
+			}
+			else if ($scope.question.type === "multiple") {
+				$scope.options.forEach(function(option) {
+					let optionFormData = {columns: ['context', 'question_id', 'is_correct'], values: [option.context, questionId, option.isCorrect]};
+					model.saveFormData('options', optionFormData);
+				});
+			} else if($scope.question.type === "image"){
+
+			}
 			$scope.question = {};
+			$scope.textOption = {};
 			$scope.options = [{context: "", isCorrect: 0, question_id: null}];
+
 		});
 		$location.path('/questions/' + $routeParams.course_id);
 	};
+	$scope.cancel = function(){
+		$location.path('/questions/' + $routeParams.course_id);
+	}
 	$scope.addOption = function() {
 		$scope.options.push({context: "", isCorrect: 0, question_id: null});
 	};
@@ -209,6 +228,8 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 	$scope.questionSets = model.getQuestionSets();
 	$scope.courses = model.getCourses();
+	$scope.questionSetForModal = "";
+
 
 	$scope.getCourse = function(course_id){
 		return model.getCourse(course_id)[0];
@@ -232,12 +253,37 @@ angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 			$location.path('/add-question-set')
 		}
 	}
+		
+	$scope.openModalForGeneratePDF = function(qset){
+		$('#CreatePdf').modal();
+		$('#CreatePdf').modal('open');
+		$scope.questionSetForModal = qset;
 
+	}
+
+	$scope.generatePDF = function(includeAnswers){
+		let dataForPDF = [];
+		let questionSetItems = model.getQuestionSetItems($scope.questionSetForModal.question_set_id);
+		for (var qsi in questionSetItems){
+			console.log('qsi', qsi)
+			let question = model.getQuestion(questionSetItems[qsi].question_id)[0];
+			let options = model.getOptionsForQuestion(question.question_id);
+			question.options = [];
+			for (var option in options) {
+				question.options.push(options[option]);				
+			}
+
+			dataForPDF.push(question);
+		}
+		console.log(dataForPDF);
+		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers); 
+	}
 });
 
 angularApp.controller('QuestionSetsForCourseCtrl', function($scope, $routeParams) {
 	$scope.questionSetsForCourse = model.getQuestionSetsForCourse($routeParams.course_id);
 	$scope.course = model.getCourse($routeParams.course_id)[0];
+	$scope.questionSetForModal = "";
 
 
 	$scope.deleteQuestionSet = function(qset_id) {
@@ -245,10 +291,48 @@ angularApp.controller('QuestionSetsForCourseCtrl', function($scope, $routeParams
 		$scope.questionSetsForCourse = model.getQuestionSetsForCourse($routeParams.course_id);
 	}
 
+/*Modal for generate pdf*/
+	$scope.openModalForGeneratePDF = function(qset){
+		$('#CreatePdf').modal();
+		$('#CreatePdf').modal('open');
+		$scope.questionSetForModal = qset;
+
+	}
+
+	$scope.generatePDF = function(includeAnswers){
+		let dataForPDF = [];
+		let questionSetItems = model.getQuestionSetItems($scope.questionSetForModal.question_set_id);
+		for (var qsi in questionSetItems){
+			console.log('qsi', qsi)
+			let question = model.getQuestion(questionSetItems[qsi].question_id)[0];
+			let options = model.getOptionsForQuestion(question.question_id);
+			question.options = [];
+			for (var option in options) {
+				question.options.push(options[option]);				
+			}
+
+			dataForPDF.push(question);
+		}
+		console.log(dataForPDF);
+		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers); 
+	}
+
 });
 
-/*angularApp.controller('AddQuestionSetCtrl', function($scope, $routeParams) {
-	$scope.questionSetsForCourse = model.getQuestionSetsForCourse($routeParams.course_id);
-	$scope.course = model.getCourse($routeParams.course_id)[0];
+angularApp.controller('ViewQuestionsForQuestionSetCtrl', function($scope, $routeParams) {
+	$scope.questions = model.getQuestionsForQuestionSet($routeParams.question_set_id);
+	$scope.questionSet = model.getQuestionSet($routeParams.question_set_id)[0];
+
+	$scope.getCourse = function(course_id){
+		return model.getCourse(course_id)[0];
+	}
+
+	/*$scope.course = model.getCourse($routeParams.course_id)[0];*/
+	$scope.questionSetName = "";
+
+	$scope.getOptionForQuestion = function(qid){
+		return model.getOptionsForQuestion(qid);
+	}
+
 });
-*/
+

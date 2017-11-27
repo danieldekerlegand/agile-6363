@@ -271,13 +271,19 @@ module.exports.getOptions = function () {
 module.exports.getOptionsForQuestion = function (qid) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
-    let query = 'SELECT * FROM `options` WHERE `question_id`=(SELECT question_id from questions)'
+    let query = 'SELECT * FROM `options` WHERE `question_id` IS ?'
     let statement = db.prepare(query, [qid])
     try {
+      let values = [];
       if (statement.step()) {
-        let values = [statement.get()]
-        let columns = statement.getColumnNames()
-        return _rowsFromSqlDataObject({values: values, columns: columns})
+        let columns = statement.getColumnNames();
+        values.push(statement.get());
+        while (statement.step()) {
+          values.push(statement.get());
+        }
+        // console.log(values);
+        // console.log(columns);
+        return _rowsFromSqlDataObject({values: values, columns: columns});
       } else {
         console.log('model.getOptionsForQuestion', 'No data found for question_id =', qid)
       }
@@ -511,13 +517,40 @@ module.exports.getQuestionSetsForCourse = function (c_id) {
 /*
   Populates the question set items list for a question set
 */
-module.exports.getQuestionSetItems = function (qs_id) {
+module.exports.getQuestionSetItems = function (qs_id, cb) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
     let query = 'SELECT * FROM `question_set_items` WHERE `question_set_id` IS ?'
 		let statement = db.prepare(query, [qs_id])
     try {
 			let values = [];
+      if (statement.step()) {
+        let columns = statement.getColumnNames();
+        values.push(statement.get());
+        while (statement.step()) {
+          values.push(statement.get());
+        }
+        // console.log(values);
+        // console.log(columns);
+        return _rowsFromSqlDataObject({values: values, columns: columns});
+      }
+    } catch (error) {
+      console.log('model.getQuestionSetItems', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*for questions of question set*/
+
+module.exports.getQuestionsForQuestionSet = function (qs_id, cb) {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'SELECT * FROM `questions` WHERE `question_id` IN (SELECT question_id FROM `question_set_items` WHERE question_set_id IS ?)'
+    let statement = db.prepare(query, [qs_id])
+    try {
+      let values = [];
       if (statement.step()) {
         let columns = statement.getColumnNames();
         values.push(statement.get());

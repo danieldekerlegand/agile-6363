@@ -26,5 +26,5 @@ CREATE TABLE question_sets (
 CREATE TABLE question_set_items (
 	question_set_item_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	question_set_id INTEGER REFERENCES question_sets(question_set_id) ON DELETE CASCADE,
-	question_id INTEGER NOT NULL
+	question_id INTEGER REFERENCES questions(question_id) ON DELETE CASCADE
 );
