@@ -32,16 +32,16 @@
     <ul id="courses-list">
     <li ng-repeat="course in courses">
       <div class="col s12 m6 l4">
-          <div class="card small white">
+          <div class="card white">
               <div class="card-content teal-text text-darken-1 text-style">
               	<div class="card_meta">{{course.course_number}}</div>
                 	<span class="card-title">{{course.course_name}}</span>
               </div>
               <div class="card-action">
-                	<a href="#!questions/{{course.course_id}}">View Question Bank</a>
+                	<a href="#!questions/{{course.course_id}}">Question Bank</a>
                   <br>
 
-                  <a href="#!question-sets/{{course.course_id}}">View Question Sets</a>
+                  <a href="#!question-sets/{{course.course_id}}">Question Sets</a>
                   <div class="section"></div>
                     <!-- <a href="#!add-question">Add Question</a> -->
                 	<!-- <a href="#!questions">Answer Sets</a> -->

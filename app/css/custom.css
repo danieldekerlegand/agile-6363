@@ -42,8 +42,36 @@ nav{
 	padding-bottom: 4px;
 }
 
+.question{
+	padding-bottom: 8px;
+}
 .question-text{
+	font-size : 16px;
+}
+.question-point{
+	font-size: 12px;
+	font-weight: 600;
+	padding: 0 4px 0 4px;
 
+}
+
+.question-index{
+	font-weight: 600;
+
+}
+
+.correct-answer{
+	padding: 0 64px 0 64px;
+}
+
+
+.collection-new{
+	display: block;
+  	color: #26a69a;
+}
+
+.strong{
+	font-weight: 600;
 }
 
 /*.navbar-material .nav-wrapper .brand-logo .navbar-fixed img {

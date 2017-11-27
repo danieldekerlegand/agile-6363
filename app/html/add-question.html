@@ -6,7 +6,7 @@
 			<div class="row">
 				<div class="col s12 m12 l12">
 					<div class="input-field">
-						<input type="text" class="validate-focus" textid="question_text" ng-model="question.text">
+						<input type="text" textid="question_text" ng-model="question.text" class="validate" required="" aria-required="true">
 						<label for="question_text" class="active">Question Text</label> 
 					</div>
 				</div>
@@ -15,7 +15,7 @@
 				<div class="col s12 m12 l12">
 					<h6 class="teal-text text-darken-1">Please select your preferred question type:</h6>
 					<div>
-						<input type="radio" id="questionType1" name="type" value="text" ng-model="question.type"> <label for="questionType1">Text Answer</label>
+						<input type="radio" id="questionType1" name="type" value="text" ng-model="question.type" > <label for="questionType1">Text Answer</label>
 						<input type="radio" id="questionType2" name="type" value="multiple" ng-model="question.type"> <label for="questionType2">Multiple Choice</label>
 						
 					</div>
@@ -23,7 +23,7 @@
 				        <div class="col s12 m12 l12">
 				          Add points to the question:
 				          <div class="input-field inline">
-				           <input type="text" name="point" ng-model="question.point">
+				           <input type="text" name="point" ng-model="question.point" class="validate" required="" aria-required="true">
 				            <label for="questionType2">Point</label>
 				          </div>
 				        </div>
@@ -32,7 +32,7 @@
 					<div ng-if="showFreeform()" class="input-field">
 						
 						<label for="textarea1">Write a text answer</label>
-						<textarea id="textarea1" class="materialize-textarea" ng-model="textOption.context"></textarea>
+						<textarea id="textarea1" class="materialize-textarea" ng-model="textOption.context" class="validate" required="" aria-required="true"></textarea>
           			</div>
 						<!-- <textarea placeholder="Add an answer..." name="context" ng-model="option.context"></textarea> -->
 					
@@ -41,7 +41,7 @@
 						<h6 class="blue-grey-text text-darken-3">Add Options for the Questions</h6>
 						<ol>
 							<li ng-repeat="option in options">
-								<input type="text" placeholder="Add an answer option..." name="context" ng-model="options[$index].context" />
+								<input type="text" placeholder="Add an answer option..." name="context" ng-model="options[$index].context" class="validate" required="" aria-required="true" />
 								
 								<input id="checkFollower" type="checkbox" name="isCorrect" ng-checked="options[$index].isCorrect"><label>Correct Answer<input type="checkbox" ng-model="options[$index].isCorrect"></label>
 
@@ -60,6 +60,7 @@
 				<div class="col s12 m12 l12">
 				<!-- <a class="waves-effect waves-light btn" type="submit">Add Question</a> -->
 					<button class="waves-effect waves-light btn" onclick="Materialize.toast('Question Added to the Question Bank', 4000)" type="submit">Add Question</button>
+					<a href="" ng-click="cancel()" class="btn waves-effect right">Cancel</a>
 					<div class="section"></div>
 				</div>
 			</div>

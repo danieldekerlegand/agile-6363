@@ -53,6 +53,13 @@ SQL.dbClose = function (databaseHandle, databaseFileName) {
   }
 }
 
+module.exports.wipeDatabase = function(appPath, callback) {
+	let dbPath = path.join(appPath, 'example.db')
+	fs.unlink(dbPath, function() {
+		callback();
+	});
+}
+
 /*
   A function to create a new SQLite3 database from schema.sql.
 
@@ -216,6 +223,7 @@ module.exports.getQuestionsForCourse = function (co_id) {
 module.exports.deleteQuestion = function (qid, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `questions` WHERE `question_id` IS ?'
     let statement = db.prepare(query)
     try {
@@ -317,6 +325,7 @@ module.exports.getOption = function (oid) {
 module.exports.deleteOption = function (oid, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `options` WHERE `option_id` IS ?'
     let statement = db.prepare(query)
     try {
@@ -388,6 +397,7 @@ module.exports.getCourse = function (co_id) {
 module.exports.deleteCourse = function (co_id, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `courses` WHERE `course_id` IS ?'
     let statement = db.prepare(query)
     try {
@@ -412,6 +422,7 @@ module.exports.deleteCourse = function (co_id, callback) {
 module.exports.deleteQuestionSet = function (qs_id, callback) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
+		db.exec('PRAGMA foreign_keys = ON;');
     let query = 'DELETE FROM `question_sets` WHERE `question_set_id` IS ?'
     let statement = db.prepare(query)
     try {
@@ -506,13 +517,40 @@ module.exports.getQuestionSetsForCourse = function (c_id) {
 /*
   Populates the question set items list for a question set
 */
-module.exports.getQuestionSetItems = function (qs_id) {
+module.exports.getQuestionSetItems = function (qs_id, cb) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
     let query = 'SELECT * FROM `question_set_items` WHERE `question_set_id` IS ?'
 		let statement = db.prepare(query, [qs_id])
     try {
 			let values = [];
+      if (statement.step()) {
+        let columns = statement.getColumnNames();
+        values.push(statement.get());
+        while (statement.step()) {
+          values.push(statement.get());
+        }
+        // console.log(values);
+        // console.log(columns);
+        return _rowsFromSqlDataObject({values: values, columns: columns});
+      }
+    } catch (error) {
+      console.log('model.getQuestionSetItems', error.message)
+    } finally {
+      SQL.dbClose(db, window.model.db)
+    }
+  }
+}
+
+/*for questions of question set*/
+
+module.exports.getQuestionsForQuestionSet = function (qs_id, cb) {
+  let db = SQL.dbOpen(window.model.db)
+  if (db !== null) {
+    let query = 'SELECT * FROM `questions` WHERE `question_id` IN (SELECT question_id FROM `question_set_items` WHERE question_set_id IS ?)'
+    let statement = db.prepare(query, [qs_id])
+    try {
+      let values = [];
       if (statement.step()) {
         let columns = statement.getColumnNames();
         values.push(statement.get());
