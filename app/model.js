@@ -269,7 +269,7 @@ module.exports.getOptions = function () {
 module.exports.getOptionsForQuestion = function (qid) {
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
-    let query = 'SELECT * FROM `options` WHERE `question_id`=(SELECT question_id from questions)'
+    let query = 'SELECT * FROM `options` WHERE `question_id` IS ?'
     let statement = db.prepare(query, [qid])
     try {
       if (statement.step()) {
