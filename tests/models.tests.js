@@ -1,3 +1,6 @@
+/* jshint -W024 */
+/* jshint expr:true */
+
 const assert = require('assert')
 const path = require('path')
 const app = require('electron').remote.app
