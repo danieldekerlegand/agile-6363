@@ -162,4 +162,48 @@ describe('model', function () {
 			expect(optionsObj).to.be.undefined;
 		});
 	})
+
+	describe('questionSets', function() {
+		before(function() {
+			let course = {
+				columns: ["course_name", "course_number"],
+				values: ["Agile", "1234"]
+			}
+			window.model.saveFormData('courses', course)
+		})
+
+		it('should insert a question set', function() {
+			let courseId = window.model.getCourses()[0].course_id;
+
+			let qset = {
+				columns: ["question_set_name", "course_id"],
+				values: ["Question Set I", courseId]
+			}
+			window.model.saveFormData('question_sets', qset);
+		});
+		
+		it('should get all question sets', function() {
+			let questionSetsObj = window.model.getQuestionSets();
+			let questionSets = Object.values(questionSetsObj);
+			expect(questionSets.length).to.equal(1);
+		});
+
+		it('should get a question set by id', function() {
+			let questionSetsObj = window.model.getQuestionSets();
+			let questionSetByIdObj = window.model.getQuestionSet(questionSetsObj[0].question_set_id);
+	
+			expect(questionSetByIdObj[0]).to.be.an('object');
+			
+			expect(questionSetByIdObj[0].question_set_name).to.equal("Question Set I");
+
+		});
+
+		it('should delete a question set', function() {
+			let questionSetsObj = window.model.getQuestionSets();
+			model.deleteQuestionSet(questionSetsObj[0].question_set_id);
+
+			questionSetsObj = window.model.getQuestionSets();
+			expect(questionSetsObj).to.be.undefined;
+		});
+	})
 })

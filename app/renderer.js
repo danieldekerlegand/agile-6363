@@ -188,7 +188,8 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 				});
 			} else if($scope.question.type === "image"){
 				$scope.images.forEach(function(image) {
-					let optionFormData = {columns: ['context', 'question_id', 'is_correct', 'image_path'], values: ["image", questionId, option.isCorrect]};
+					model.copyImage()
+					let optionFormData = {columns: ['context', 'question_id', 'is_correct', 'image_path'], values: ["image", questionId, true, ]};
 					model.saveFormData('options', optionFormData);
 				});
 				console.log("adding question");
