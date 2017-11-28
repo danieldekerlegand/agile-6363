@@ -1,13 +1,13 @@
 const Application = require("spectron").Application;
-
 const chai = require('chai');
 const should = chai.should();
 const chaiAsPromised = require('chai-as-promised');
 const testPage = require('./test.page.js');
 
 var page = new testPage();
+var path = require('path');
 
-var electronPath = path.join(__dirname, '..', 'node_modules', '.bin', 'electron');
+var electronPath = path.join(__dirname, '..', 'node_modules', '.bin', 'electron.cmd');
 
 if (process.platform === 'win32') {
     electronPath += '.cmd';
