@@ -12,35 +12,40 @@ module.exports.exportPdf = function(questions, question_set_name, showAnswers) {
 
 		let text = ''
 		questions.forEach(function(question, qIndex) {
-			text += `Q-${qIndex+1} [${question.question_point} pts] ${question.question_text}\n\n`;
+			doc.text(`Q-${qIndex+1} [${question.question_point} pts] ${question.question_text}\n\n`);
 			question.options.forEach(function(option, oIndex) {
 				if (question.question_type === "text") {
 					if (showAnswers) {
-						text += `Answer:\n${option.context}`;
+						doc.text(`Answer:\n${option.context}`);
 					} else {
-						text += "\n\n\n\n\n\n";
+						doc.text("\n\n\n\n\n\n");
 					}
 				} else if (question.question_type === "multiple") {
-					text += `${String.fromCharCode(97 + oIndex)}) ${option.context} \n`;
+					doc.text(`${String.fromCharCode(97 + oIndex)}) ${option.context} \n`);
+				} else if (question.question_type === "image") {
+					if (showAnswers) {
+						doc.text("\n");
+						doc.image(option.image_path,{width:300});
+					} else {
+						doc.text("\n\n\n\n\n\n");
+					}
 				}
 			});
 
 			if (showAnswers && question.question_type === "multiple") {
-				text += "\nAnswer: \n";
+				doc.text("\nAnswer: \n");
 				question.options.forEach(function(option, oIndex) {
 					if (option.is_correct) {
 						if (oIndex === question.options.length - 2) {
-							text += `${String.fromCharCode(97 + oIndex)}) and `;
+							doc.text(`${String.fromCharCode(97 + oIndex)}) and `);
 						} else {
-							text += `${String.fromCharCode(97 + oIndex)})  `;
+							doc.text(`${String.fromCharCode(97 + oIndex)})  `);
 						}
 					}
 				});
 			}
-			text += "\n\n"
+			doc.text("\n\n");
 		});
-
-		doc.text(text)
 
 		doc.end()
 	});

@@ -1,14 +1,12 @@
 const fs = require('fs')
 const path = require('path')
 const app = require('electron').remote.app
-const log = require('loglevel')
 
 let webRoot = path.dirname(__dirname)
 window.model = require(path.join(webRoot, 'model.js'))
 window.model.db = path.join(app.getPath('userData'), 'example.db')
 window.angular = require('angular')
 window.Hammer = require('hammerjs')
-
 
 const pdf = require(path.join(webRoot, 'generate-pdf.js'))
 
@@ -96,6 +94,7 @@ angularApp.controller('NavCtrl', function($scope, courses) {
 
 angularApp.controller('LandingCtrl', function($scope, courses) {
 	$scope.coursesExist = function() {
+		console.log('landing control', courses.exist());
 		return courses.exist();
 	}
 });
@@ -128,6 +127,7 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 	$scope.course_id = $routeParams.course_id;
 	$scope.course = model.getCourse($routeParams.course_id)[0];
 	$scope.questionSetName = "";
+	$scope.imageForModal = "";
 
 	$scope.getOptionForQuestion = function(qid){
 		return model.getOptionsForQuestion(qid);
@@ -164,14 +164,27 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 		$('#modal' + qid).modal();
 		$('#modal' + qid).modal('open');
 	}
+
+	$scope.showModalForImage = function(imagePath) {
+		$scope.imageForModal = imagePath;
+
+		$("#modal-for-image").modal();
+		$("#modal-for-image").modal('open');
+	}
+
 	$scope.deleteQuestion = function(qid) {
 		model.deleteQuestion(qid);
 		$scope.questions = model.getQuestionsForCourse($routeParams.course_id);
+	}
+
+	$scope.getImagePath = function(img) {
+		return path.join(app.getPath('userData'), 'images', img);
 	}
 });
 
 angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $location) {
 	$scope.question = {};
+	$scope.hiddenDiv = false;
 	$scope.options = [{context: "", isCorrect: 0, question_id: null}];
 	$scope.images = [];
 	$scope.textOption = {context: ""};
@@ -188,7 +201,15 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 					model.saveFormData('options', optionFormData);
 				});
 			} else if($scope.question.type === "image"){
-
+				$scope.images.forEach(function(image) {
+					model.copyImage(image.path, function(newImgPath) {
+						console.log('newImgPath', newImgPath);
+						newImgPath = path.join(app.getPath('userData'), 'images', newImgPath);
+						let optionFormData = {columns: ['context', 'question_id', 'is_correct', 'image_path'], values: ["image", questionId, true, newImgPath]};
+						model.saveFormData('options', optionFormData);
+					});
+				});
+				console.log("adding question");
 			}
 			$scope.question = {};
 			$scope.textOption = {};
@@ -254,7 +275,7 @@ angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 			$location.path('/add-question-set')
 		}
 	}
-		
+
 	$scope.openModalForGeneratePDF = function(qset){
 		$('#CreatePdf').modal();
 		$('#CreatePdf').modal('open');
@@ -266,16 +287,18 @@ angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 		let dataForPDF = [];
 		let questionSetItems = model.getQuestionSetItems($scope.questionSetForModal.question_set_id);
 		for (var qsi in questionSetItems){
+			console.log('qsi', qsi)
 			let question = model.getQuestion(questionSetItems[qsi].question_id)[0];
 			let options = model.getOptionsForQuestion(question.question_id);
 			question.options = [];
 			for (var option in options) {
-				question.options.push(options[option]);				
+				question.options.push(options[option]);
 			}
 
 			dataForPDF.push(question);
 		}
-		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers); 
+		console.log(dataForPDF);
+		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers);
 	}
 });
 
@@ -302,16 +325,18 @@ angularApp.controller('QuestionSetsForCourseCtrl', function($scope, $routeParams
 		let dataForPDF = [];
 		let questionSetItems = model.getQuestionSetItems($scope.questionSetForModal.question_set_id);
 		for (var qsi in questionSetItems){
+			console.log('qsi', qsi)
 			let question = model.getQuestion(questionSetItems[qsi].question_id)[0];
 			let options = model.getOptionsForQuestion(question.question_id);
 			question.options = [];
 			for (var option in options) {
-				question.options.push(options[option]);				
+				question.options.push(options[option]);
 			}
 
 			dataForPDF.push(question);
 		}
-		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers); 
+		console.log(dataForPDF);
+		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers);
 	}
 
 });
@@ -332,4 +357,3 @@ angularApp.controller('ViewQuestionsForQuestionSetCtrl', function($scope, $route
 	}
 
 });
-
