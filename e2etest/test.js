@@ -5,16 +5,16 @@ const chaiAsPromised = require('chai-as-promised');
 const testPage = require('./test.page.js');
 
 var page = new testPage();
-let path = require('path');
+let localPath = require('path');
 
-var electronPath = path.join(__dirname, '..', 'node_modules', '.bin', 'electron.cmd');
+var electronPath = localPath.join(__dirname, '..', 'node_modules', '.bin', 'electron.cmd');
 
 if (process.platform === 'win32') {
     electronPath += '.cmd';
 }
 
 // Path to your application
-var appPath = path.join(__dirname, '..');
+var appPath = localPath.join(__dirname, '..');
 
 var app = new Application({
             path: electronPath,
