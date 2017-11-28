@@ -4,11 +4,6 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
-const Application = require('spectron').Application;
-const path = require('path');
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
-
 const path = require('path')
 const url = require('url')
 
