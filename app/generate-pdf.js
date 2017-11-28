@@ -34,15 +34,23 @@ module.exports.exportPdf = function(questions, question_set_name, showAnswers) {
 
 			if (showAnswers && question.question_type === "multiple") {
 				doc.text("\nAnswer: \n");
+
+				let answers = question.options.filter(function(option) {
+					return option.is_correct;
+				});
+
+				let answerText = "";
 				question.options.forEach(function(option, oIndex) {
 					if (option.is_correct) {
-						if (oIndex === question.options.length - 2) {
-							doc.text(`${String.fromCharCode(97 + oIndex)}) and `);
+						if (answers.length > 1 && answers.indexOf(option) === answers.length - 2) {
+							answerText += `${String.fromCharCode(97 + oIndex)}) and `;
 						} else {
-							doc.text(`${String.fromCharCode(97 + oIndex)})  `);
+							answerText += `${String.fromCharCode(97 + oIndex)})  `;
 						}
 					}
 				});
+
+				doc.text(answerText);
 			}
 			doc.text("\n\n");
 		});
