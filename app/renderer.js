@@ -187,7 +187,11 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 					model.saveFormData('options', optionFormData);
 				});
 			} else if($scope.question.type === "image"){
-
+				$scope.images.forEach(function(image) {
+					let optionFormData = {columns: ['context', 'question_id', 'is_correct', 'image_path'], values: ["image", questionId, option.isCorrect]};
+					model.saveFormData('options', optionFormData);
+				});
+				console.log("adding question");
 			}
 			$scope.question = {};
 			$scope.textOption = {};
@@ -253,7 +257,7 @@ angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 			$location.path('/add-question-set')
 		}
 	}
-		
+
 	$scope.openModalForGeneratePDF = function(qset){
 		$('#CreatePdf').modal();
 		$('#CreatePdf').modal('open');
@@ -270,13 +274,13 @@ angularApp.controller('QuestionSetsCtrl', function($scope, $location) {
 			let options = model.getOptionsForQuestion(question.question_id);
 			question.options = [];
 			for (var option in options) {
-				question.options.push(options[option]);				
+				question.options.push(options[option]);
 			}
 
 			dataForPDF.push(question);
 		}
 		console.log(dataForPDF);
-		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers); 
+		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers);
 	}
 });
 
@@ -308,13 +312,13 @@ angularApp.controller('QuestionSetsForCourseCtrl', function($scope, $routeParams
 			let options = model.getOptionsForQuestion(question.question_id);
 			question.options = [];
 			for (var option in options) {
-				question.options.push(options[option]);				
+				question.options.push(options[option]);
 			}
 
 			dataForPDF.push(question);
 		}
 		console.log(dataForPDF);
-		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers); 
+		pdf.exportPdf(dataForPDF, $scope.questionSetForModal.question_set_name, includeAnswers);
 	}
 
 });
@@ -335,4 +339,3 @@ angularApp.controller('ViewQuestionsForQuestionSetCtrl', function($scope, $route
 	}
 
 });
-
