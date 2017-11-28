@@ -127,6 +127,7 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 	$scope.course_id = $routeParams.course_id;
 	$scope.course = model.getCourse($routeParams.course_id)[0];
 	$scope.questionSetName = "";
+	$scope.imageForModal = "";
 
 	$scope.getOptionForQuestion = function(qid){
 		return model.getOptionsForQuestion(qid);
@@ -163,6 +164,14 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 		$('#modal' + qid).modal();
 		$('#modal' + qid).modal('open');
 	}
+
+	$scope.showModalForImage = function(imagePath) {
+		$scope.imageForModal = imagePath;
+
+		$("#modal-for-image").modal();
+		$("#modal-for-image").modal('open');
+	}
+
 	$scope.deleteQuestion = function(qid) {
 		model.deleteQuestion(qid);
 		$scope.questions = model.getQuestionsForCourse($routeParams.course_id);
@@ -195,6 +204,7 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 				$scope.images.forEach(function(image) {
 					model.copyImage(image.path, function(newImgPath) {
 						console.log('newImgPath', newImgPath);
+						newImgPath = path.join(app.getPath('userData'), 'images', newImgPath);
 						let optionFormData = {columns: ['context', 'question_id', 'is_correct', 'image_path'], values: ["image", questionId, true, newImgPath]};
 						model.saveFormData('options', optionFormData);
 					});

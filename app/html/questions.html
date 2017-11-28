@@ -71,10 +71,7 @@
 																	<li ng-repeat="option in options" >
 																			<div class="correct-answer">
 																				<span class="strong">Answer: </span>
-																				<div ng-if="option.image_path">
-																						<button ng-click="hiddenDiv = !hiddenDiv" class="review">Show Image</button>
-																						<img ng-show="hiddenDiv" ng-src="{{getImagePath(option.image_path)}}" style="width: 100%;">
-																				</div>
+																				<button ng-if="option.image_path" ng-click="showModalForImage(option.image_path)">View Image</button>
 																			</div>
 																	</li>
 															</ul>
@@ -99,6 +96,16 @@
                         <button class="modal-action modal-close waves-effect waves-green btn-flat">Done</button>
                     </div>
                 </div>
+
+								<div id="modal-for-image" class="modal" style="text-align: center;">
+										<div class="modal-content">
+											<img src="{{imageForModal}}" style="width: 60%; height: 60%;"/>
+										</div>
+										<div class="modal-footer">
+												<button class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</button>
+												<button class="modal-action modal-close waves-effect waves-green btn-flat">Done</button>
+										</div>
+								</div>
             </li>
         </ul>
     </div>
