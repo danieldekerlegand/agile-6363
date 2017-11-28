@@ -35,9 +35,8 @@
                         <div class="question">
                             <span class="question-index left blue-grey-text text-darken-3">Q-{{$index + 1}}</span><span class="question-point left blue-grey-text text-darken-3"> [{{question.question_point}}Pts]</span>
                             <span class="question-text">{{question.question_text}}</span>
-														<div ng-if="question.image_path"><img ng-src="{{getImagePath(question.image_path)}}" /></div>
+							<div ng-if="question.image_path"><img ng-src="{{getImagePath(question.image_path)}}" /></div>
                         </div>
-
 
                         <div class="blue-grey-text text-darken-3" ng-if="question.question_type == 'text'">
                             <div ng-init="options = getOptionForQuestion(question.question_id)">
@@ -65,18 +64,18 @@
                             </div>
                         </div>
 
-												<div class="blue-grey-text text-darken-3" ng-if="question.question_type == 'image'">
-													<div ng-init="options = getOptionForQuestion(question.question_id)">
-															<ul>
-																	<li ng-repeat="option in options" >
-																			<div class="correct-answer">
-																				<span class="strong">Answer: </span>
-																				<button ng-if="option.image_path" ng-click="showModalForImage(option.image_path)">View Image</button>
-																			</div>
-																	</li>
-															</ul>
-													</div>
-												</div>
+						<div class="blue-grey-text text-darken-3" ng-if="question.question_type == 'image'">
+							<div ng-init="options = getOptionForQuestion(question.question_id)">
+                                <ul>
+									<li ng-repeat="option in options" >
+											<div class="correct-answer">
+												<span class="strong">Answer: </span>
+												<button class = "btn waves-effect waves-light teal darken-1" ng-if="option.image_path" ng-click="showModalForImage(option.image_path)">View Image</button>
+											</div>
+									</li>
+								</ul>
+							</div>
+						</div>
                     </div>
 
                     <div class="right">
@@ -86,8 +85,22 @@
                             <i class = "material-icons">delete</i></a>
                     </div>
                 </div>
+				<div id="modal-for-image" class="modal" style="text-align: center;">
+						<div class="modal-content">
+							<img src="{{imageForModal}}" style="width: 60%; height: 60%;"/>
+						</div>
+						<div class="modal-footer">
+							<button class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</button>
+							<button class="modal-action modal-close waves-effect waves-green btn-flat">Done</button>
+						</div>
+				</div>
+            </li>
+        </ul>
+    </div>
+</div>
 
-                <div id="modal{{question.question_id}}" class="modal">
+
+<!-- <div id="modal{{question.question_id}}" class="modal">
                     <div class="modal-content">
                       <input type="text" value="{{question.question_text}}">
                     </div>
@@ -96,17 +109,4 @@
                         <button class="modal-action modal-close waves-effect waves-green btn-flat">Done</button>
                     </div>
                 </div>
-
-								<div id="modal-for-image" class="modal" style="text-align: center;">
-										<div class="modal-content">
-											<img src="{{imageForModal}}" style="width: 60%; height: 60%;"/>
-										</div>
-										<div class="modal-footer">
-												<button class="modal-action modal-close waves-effect waves-red btn-flat">Cancel</button>
-												<button class="modal-action modal-close waves-effect waves-green btn-flat">Done</button>
-										</div>
-								</div>
-            </li>
-        </ul>
-    </div>
-</div>
+ -->

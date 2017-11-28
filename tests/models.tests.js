@@ -209,7 +209,7 @@ describe('model', function () {
 
 
 	/*For QuestionSetItems*/
-	describe('questionSetItems', function() {
+	/*describe('questionSetItems', function() {
 		before(function() {
 			let course = {
 				columns: ["course_name", "course_number"],
@@ -241,6 +241,6 @@ describe('model', function () {
 			});
 
 
-	})
+	})*/
 
 })
