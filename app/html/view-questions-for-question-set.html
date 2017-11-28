@@ -1,36 +1,13 @@
 <div class="main-container">
     <div class="row">
-        
-        <h4 class="teal-text text-darken-1 center-align">Question Bank of {{course.course_name}}</h4>
-        
-        <a href="#!add-question/{{course_id}}" class="waves-effect waves-light btn">Create Question</a>
-        <a class="waves-effect waves-light btn right modal-trigger" ng-disabled="questionSetArr.length === 0" ng-click="openQuestionSetNameModal()">
-        Generate Question Set</a> 
+        <h6 class="teal-text text-darken-1">{{getCourse(questionSet.course_id).course_number}} | <span class="strong">{{getCourse(questionSet.course_id).course_name}}</span></h6>
+        <h5 class="teal-text text-darken-1">Question Set {{questionSet.question_set_name}}</h>
     </div>
-
-    <!-- Modal for generating question set -->
-    <div id="questionSetName" class="modal">
-        <div class="row">
-            <div class="col s12 m12 l12"">
-                <div class="modal-content">
-                    <div class="input-field">
-                        <input type="text" ng-model="questionSetName" class="validate" required><label>Question Set Name</label>
-                    </div>  
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-action modal-close waves-light btn left" ng-click="generateQuestionSet()">Done</button>
-                    <button class="modal-action modal-close waves-light btn">Cancel</button>
-                </div>
-            </div>  
-        </div>
-    </div>
-
-    <div class="row">
+    
+       <div class="row">
         <ul id="questions-list" >
             <li ng-repeat="question in questions" class="questionlist-card-container">
                 <div class = "card-panel">
-                    <input id="checkFollower" type="checkbox" ng-checked="questionSetArr.indexOf(question.question_id) > -1"><label class="teal-text text-lighten-1">Select question to add to question set<input type="checkbox" ng-click="toggleSelection(question.question_id)"></label><br/>
-                                            
                     <div class="row">
                         <div class="question">
                             <span class="question-index left blue-grey-text text-darken-3">Q-{{$index + 1}}</span><span class="question-point left blue-grey-text text-darken-3"> [{{question.question_point}}Pts]</span>
@@ -63,13 +40,6 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-            
-                    <div class="right">
-                       <!--  <button class = "btn btn-floating waves-effect waves-light teal darken-1  modal-trigger" ng-click="showEditModal(question.question_id)">
-                            <i class = "material-icons">mode_edit</i></button> -->
-                        <a class = "btn-floating waves-effect waves-light teal darken-1" ng-click="deleteQuestion(question.question_id)">
-                            <i class = "material-icons">delete</i></a>
                     </div>
                 </div>
 
