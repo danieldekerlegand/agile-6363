@@ -14,6 +14,7 @@ CREATE TABLE questions (
 CREATE TABLE options (
 	option_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	context TEXT(255,0) NOT NULL,
+	image_path TEXT(255,0),
   question_id INTEGER REFERENCES questions(question_id) ON DELETE CASCADE,
   is_correct INTEGER NOT NULL
 );

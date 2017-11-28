@@ -167,10 +167,15 @@ angularApp.controller('QuestionsCtrl', function($scope, $routeParams) {
 		model.deleteQuestion(qid);
 		$scope.questions = model.getQuestionsForCourse($routeParams.course_id);
 	}
+
+	$scope.getImagePath = function(img) {
+		return path.join(app.getPath('userData'), 'images', img);
+	}
 });
 
 angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $location) {
 	$scope.question = {};
+	$scope.hiddenDiv = false;
 	$scope.options = [{context: "", isCorrect: 0, question_id: null}];
 	$scope.images = [];
 	$scope.textOption = {context: ""};
@@ -188,9 +193,11 @@ angularApp.controller('AddQuestionCtrl', function($scope, $routeParams, $locatio
 				});
 			} else if($scope.question.type === "image"){
 				$scope.images.forEach(function(image) {
-					model.copyImage()
-					let optionFormData = {columns: ['context', 'question_id', 'is_correct', 'image_path'], values: ["image", questionId, true, ]};
-					model.saveFormData('options', optionFormData);
+					model.copyImage(image.path, function(newImgPath) {
+						console.log('newImgPath', newImgPath);
+						let optionFormData = {columns: ['context', 'question_id', 'is_correct', 'image_path'], values: ["image", questionId, true, newImgPath]};
+						model.saveFormData('options', optionFormData);
+					});
 				});
 				console.log("adding question");
 			}

@@ -112,6 +112,7 @@ module.exports.initDb = function (appPath, callback) {
   Insert or update form data in the database.
 */
 module.exports.saveFormData = function (tableName, keyValue, callback) {
+	console.log('saveFormData', keyValue);
   if (keyValue.columns.length > 0) {
     let db = SQL.dbOpen(window.model.db)
     if (db !== null) {
@@ -243,7 +244,6 @@ module.exports.deleteQuestion = function (qid, callback) {
   Populates the answer List.
 */
 module.exports.getOptions = function () {
-  log.error('error message for log')
   let db = SQL.dbOpen(window.model.db)
   if (db !== null) {
     let query = 'SELECT * FROM `options` ORDER BY `option_id` ASC'
@@ -408,25 +408,26 @@ module.exports.deleteCourse = function (co_id, callback) {
   }
 }
 
-module.exports.copyImage = function (imagePath) {
+module.exports.copyImage = function (imagePath, cb) {
   var dir = path.join(app.getPath('userData'), 'images')
-  //var d = new Date();
-  //var name = './duaa.jpg';
   var name1 = new Date().getTime() + '.jpg';
 
   console.log(imagePath);
-  
+
   var readStream=fs.createReadStream(imagePath);
   var writeStream=fs.createWriteStream(dir + '/'+ name1);
-  
-    if (!fs.existsSync(dir)){
-      //create nre directory with name dir
-        fs.mkdirSync(dir);
-    }
-    readStream.pipe(writeStream);
-    return name1;
-   // console.log(name1);
-  //  fs.createReadStream('.\node\crit.jpg').pipe(fs.createWriteStream('./images/+new Date().getTime()+.png'));
+
+  if (!fs.existsSync(dir)){
+    //create nre directory with name dir
+      fs.mkdirSync(dir);
+  }
+  readStream.pipe(writeStream);
+
+	if (cb) {
+		cb(name1);
+	} else {
+		return name1;
+	}
 }
 
 /*
@@ -497,7 +498,7 @@ module.exports.getQuestionSet = function (qs_id) {
       SQL.dbClose(db, window.model.db)
     }
   }
-} 
+}
 
 /*
   Get all question sets for a course.
