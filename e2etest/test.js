@@ -5,7 +5,7 @@ const chaiAsPromised = require('chai-as-promised');
 const testPage = require('./test.page.js');
 
 var page = new testPage();
-var path = require('path');
+let path = require('path');
 
 var electronPath = path.join(__dirname, '..', 'node_modules', '.bin', 'electron.cmd');
 
