@@ -13,7 +13,7 @@
 			</div>
 			<div class="row">
 				<div class="col s12 m12 l12">
-					<h6 class="teal-text text-darken-1">Please select your preferred question type:</h6>
+					<h6 class="teal-text text-darken-1">Please select your preferred answer type:</h6>
 					<div>
 						<input type="radio" id="questionType1" name="type" value="text" ng-model="question.type" > <label for="questionType1">Text Answer</label>
 						<input type="radio" id="questionType2" name="type" value="multiple" ng-model="question.type"> <label for="questionType2">Multiple Choice</label>
@@ -57,7 +57,7 @@
 						<form method="post" enctype="multipart/form-data">
 						  <div>
 						    <label for="image_uploads">Choose images to upload (PNG, JPG)</label>
-						    <input custom-on-change="uploadFile" type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" multiple>
+						    <input cus tom-on-change="uploadFile" type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" multiple>
 						  </div>
 						  <div class="preview">
 								<div ng-if="imagesSelected()">

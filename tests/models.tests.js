@@ -206,4 +206,41 @@ describe('model', function () {
 			expect(questionSetsObj).to.be.undefined;
 		});
 	})
+
+
+	/*For QuestionSetItems*/
+	/*describe('questionSetItems', function() {
+		before(function() {
+			let course = {
+				columns: ["course_name", "course_number"],
+				values: ["Agile", "1234"]
+			}
+			window.model.saveFormData('courses', course)
+			
+			let courseId = window.model.getCourses()[0].course_id;
+
+			let question = {
+					columns: ["question_text", "question_type", "question_point", "course_id"],
+					values: ["What is the capital of Louisiana?", "text", 3, courseId]
+			}
+			window.model.saveFormData('questions', question);
+
+			let qset = {
+				columns: ["question_set_name", "course_id"],
+				values: ["Question Set I", courseId]
+			}
+			window.model.saveFormData('question_sets', qset);
+		})
+
+			it('should get a question set items by id', function() {
+				let questionSetsObj = window.model.getQuestionSets();
+				let questionSetIdObj = window.model.getQuestionSet(questionSetsObj[0].question_set_id);
+				let questionSetItemId = questionSetIdObj.question_set_id;
+				let questionSetItemsObj = window.model.getQuestionSetItems(questionSetItemId);
+				expect(questionSetItemsObj.length).to.equal(1);
+			});
+
+
+	})*/
+
 })

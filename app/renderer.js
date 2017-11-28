@@ -349,6 +349,16 @@ angularApp.controller('ViewQuestionsForQuestionSetCtrl', function($scope, $route
 		return model.getCourse(course_id)[0];
 	}
 
+	$scope.showModalForImage = function(imagePath) {
+		$scope.imageForModal = imagePath;
+
+		$("#modal-for-image").modal();
+		$("#modal-for-image").modal('open');
+	}
+
+	$scope.getImagePath = function(img) {
+		return path.join(app.getPath('userData'), 'images', img);
+	}
 	/*$scope.course = model.getCourse($routeParams.course_id)[0];*/
 	$scope.questionSetName = "";
 

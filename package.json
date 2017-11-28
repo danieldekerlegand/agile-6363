@@ -21,6 +21,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "~1.6.2",
+    "jshint": "^2.9.5",
     "mocha-electron": "^1.0.6",
     "spectron": "^3.7.2"
   },

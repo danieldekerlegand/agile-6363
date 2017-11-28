@@ -570,7 +570,7 @@ module.exports.getQuestionsForQuestionSet = function (qs_id, cb) {
         return _rowsFromSqlDataObject({values: values, columns: columns});
       }
     } catch (error) {
-      log.error('model.getQuestionSetItems', error.message)
+      log.error('model.getQuestionsForQuestionSet', error.message)
     } finally {
       SQL.dbClose(db, window.model.db)
     }
